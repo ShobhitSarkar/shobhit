@@ -3,6 +3,13 @@
 
   const S = window.SITE;
   const SECTIONS = S.sections;
+  // Inspo is a creative board: shuffle it on every visit so books, music and pictures land somewhere new.
+  if (S.inspo) {
+    for (let i = S.inspo.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [S.inspo[i], S.inspo[j]] = [S.inspo[j], S.inspo[i]];
+    }
+  }
   const PREVIEW_COUNT = 9;
   const finePointer = matchMedia("(hover: hover) and (pointer: fine)").matches;
   const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
