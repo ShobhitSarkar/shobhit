@@ -131,6 +131,7 @@ window.SITE = {
   })),
 
   inspo: [
+    { slug: "chicago-night", kind: "image", title: "Chicago at night", image: "inspo/chicago-night.jpg", line: "Chicago after dark, from way up." },
     {
       slug: "the-da-vinci-code", kind: "book", title: "The Da Vinci Code", meta: "Dan Brown", line: "Codes, cults and the Louvre after dark.",
       body: [
@@ -140,6 +141,7 @@ window.SITE = {
       ],
     },
     { slug: "neverender-rampa-remix", kind: "music", title: "Neverender (Rampa Remix)", image: "inspo/neverender.jpg", line: "Neverender (Rampa Remix) — Justice & Tame Impala" },
+    { slug: "yuhhhh", kind: "image", title: "yuhhhhhh", image: "inspo/yuhhhh.jpg", line: "cout << \"yuhhhhhh\" — the build finally worked." },
     {
       slug: "the-48-laws-of-power", kind: "book", title: "The 48 Laws of Power", meta: "Robert Greene", line: "Three thousand years of power, distilled.",
       body: [
@@ -149,6 +151,7 @@ window.SITE = {
       ],
     },
     { slug: "te-estoy-correteando", kind: "music", title: "Te Estoy Correteando", image: "inspo/te-estoy-correteando.jpg", line: "Te Estoy Correteando — LATIN MAFIA & Fred again.." },
+    { slug: "painting", kind: "image", title: "Painting", image: "inspo/painting.jpg", line: "Red, orange and a lot of white splatter." },
     {
       slug: "the-psychology-of-money", kind: "book", title: "The Psychology of Money", meta: "Morgan Housel", line: "Behaviour beats spreadsheets.",
       body: [
@@ -158,6 +161,7 @@ window.SITE = {
       ],
     },
     { slug: "juicy", kind: "music", title: "Juicy", image: "inspo/juicy.jpg", line: "Juicy — The Notorious B.I.G." },
+    { slug: "street-pole", kind: "image", title: "Street pole", image: "inspo/street-pole.jpg", line: "Chained, stickered, still standing." },
     {
       slug: "digital-fortress", kind: "book", title: "Digital Fortress", meta: "Dan Brown", line: "An unbreakable code inside the NSA.",
       body: [
