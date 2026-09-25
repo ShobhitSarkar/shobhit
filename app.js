@@ -109,9 +109,10 @@
   // ---------- Home (the scroll) ----------
 
   function renderHome() {
+    const initials = S.name.split(/\s+/).map((w) => w[0]).join("").toUpperCase();
     const index = SECTIONS.map((s, i) => `<li><a href="#" class="js-jump" data-to="s-${s.id}"><span>${pad(i + 1)}</span>${esc(s.title)}</a></li>`).join("");
     const hero = `
-      <section class="screen sec hero" id="s-home" data-name="Index">
+      <section class="screen sec hero" id="s-home">
         <div class="sec__num label">${esc(S.role)}</div>
         <div class="sec__titlewrap">${fitTitle(S.name.replace(" ", "\n"), "", "", "h1")}</div>
         <div class="hero__side">
@@ -130,7 +131,7 @@
       const list = items(s.id);
       const next = SECTIONS[i + 1];
       return `
-        <section class="screen sec${isInverse(s.id) ? " is-inverse" : ""}" id="s-${s.id}" data-name="${esc(s.title)}">
+        <section class="screen sec${isInverse(s.id) ? " is-inverse" : ""}" id="s-${s.id}">
           <div class="sec__num label">${pad(i + 1)} / ${pad(SECTIONS.length)}</div>
           <div class="sec__titlewrap">
             ${fitTitle(s.title, "", "34vh")}
@@ -145,7 +146,7 @@
     }).join("");
 
     const footer = `
-      <footer class="screen footer${SECTIONS.length % 2 ? "" : " is-inverse"}" id="s-contact" data-name="Contact">
+      <footer class="screen footer${SECTIONS.length % 2 ? "" : " is-inverse"}" id="s-contact">
         <div class="footer__cols label">
           ${S.locations.map(place).join("")}
           <div class="footer__links"><b>Quick links</b>${SECTIONS.map((s) => `<a href="#" class="u-link js-jump" data-to="s-${s.id}">${esc(s.title)}</a>`).join("")}</div>
@@ -160,8 +161,7 @@
 
     $("#app").innerHTML = `
       <header class="nav label">
-        <a href="#" class="nav__name js-jump" data-to="s-home">${esc(S.name)}</a>
-        <span class="nav__counter" id="counter">00 / Index</span>
+        <a href="#" class="nav__name js-jump" data-to="s-home" aria-label="${esc(S.name)}, back to top">${esc(initials)}</a>
         <nav class="nav__right">
           <button class="u-link js-agent-open" data-cursor="CHAT">Talk to my agent</button>
           ${emailLink("Email")}
@@ -295,7 +295,6 @@
   // ---------- Behaviours ----------
 
   function observeScreens() {
-    const counter = $("#counter");
     const io = new IntersectionObserver((entries) => {
       for (const e of entries) {
         if (!e.isIntersecting) continue;
@@ -304,9 +303,8 @@
           // Once the letters have risen in, let them leave their clip box so they can jump around.
           setTimeout(() => e.target.classList.add("is-settled"), reducedMotion ? 0 : 1500);
         }
-        const i = $$(".screen").indexOf(e.target);
-        const name = e.target.dataset.name;
-        if (counter) counter.textContent = i === 0 ? "00 / Index" : i > SECTIONS.length ? "Contact" : `${pad(i)} / ${name}`;
+        // The hero already shows the full name, so the nav's initials only appear on the other screens.
+        document.body.classList.toggle("at-home", e.target.id === "s-home");
       }
     }, { threshold: 0.45 });
     $$(".screen").forEach((s) => io.observe(s));
