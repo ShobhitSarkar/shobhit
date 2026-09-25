@@ -9,6 +9,8 @@
 //            so any logo turns black or white to match. Without one the name is set as a wordmark.
 //   kind   – (inspo only) "image" | "book"
 //   body   – array of paragraphs; a string starting with "## " becomes a subheading
+//   roles  – (work only) one entry per role at that company, newest first: { title, dates, body }.
+//            The tile shows the latest role; the company page lists them all as a timeline.
 window.SITE = {
   name: "Shobhit Sarkar",
   email: "hi@shobhit.fyi",
@@ -28,29 +30,30 @@ window.SITE = {
 
   work: [
     {
-      slug: "john-deere", title: "John Deere", meta: "Role · dates", logo: "logos/john-deere.svg", // TODO: role and dates
-      line: "TODO — one line on what you did here.",
-      body: ["TODO — the team, what you owned, and what changed because you were there."],
+      slug: "john-deere", title: "John Deere", logo: "logos/john-deere.svg",
+      line: "TODO — one line on your work here.",
+      roles: [
+        { title: "AI Engineer", dates: "2025 — now", body: ["TODO — what you own, what you've shipped, what changed because you were there."] }, // TODO: exact dates
+        { title: "Student Employee (part-time)", dates: "2023 — 2025", body: ["TODO — what you worked on while studying, and what led to the full-time role."] }, // TODO: exact dates
+      ],
     },
     {
-      slug: "collins-aerospace", title: "Collins Aerospace", meta: "Role · dates", logo: "logos/collins-aerospace.svg", // TODO
-      line: "TODO — one line on what you did here.",
-      body: ["TODO — the team, what you owned, and what changed because you were there."],
+      slug: "collins-aerospace", title: "Collins Aerospace", logo: "logos/collins-aerospace.svg",
+      line: "TODO — one line on your work here.",
+      roles: [{ title: "Role", dates: "Dates", body: ["TODO — the team, what you owned, what you shipped."] }], // TODO
     },
     {
-      slug: "kingland-systems", title: "Kingland Systems", meta: "Role · dates", logo: "logos/kingland-systems.svg", // TODO: role and dates
-      line: "TODO — one line on what you did here.",
-      body: ["TODO — the team, what you owned, and what changed because you were there."],
+      slug: "kingland-systems", title: "Kingland Systems", logo: "logos/kingland-systems.svg",
+      line: "TODO — one line on your work here.",
+      roles: [{ title: "Role", dates: "Dates", body: ["TODO — the team, what you owned, what you shipped."] }], // TODO
     },
     {
-      slug: "iowa-state-university", title: "Iowa State University", meta: "Role · dates", logo: "logos/iowa-state.svg", // TODO: role and dates
-      line: "TODO — one line on what you did here.",
-      body: ["TODO — the team, what you owned, and what changed because you were there."],
-    },
-    {
-      slug: "iowa-state-university-2", title: "Iowa State University", meta: "Role · dates", logo: "logos/iowa-state.svg", // TODO: second role and dates
-      line: "TODO — one line on what you did here.",
-      body: ["TODO — the team, what you owned, and what changed because you were there."],
+      slug: "iowa-state-university", title: "Iowa State University", logo: "logos/iowa-state.svg",
+      line: "TODO — one line on your work here.",
+      roles: [ // TODO: both Iowa State roles, newest first
+        { title: "Role", dates: "Dates", body: ["TODO"] },
+        { title: "Role", dates: "Dates", body: ["TODO"] },
+      ],
     },
   ],
 

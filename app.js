@@ -79,13 +79,19 @@
     return art(item.slug);
   }
 
+  // Work entries describe their roles; the tile shows the latest one.
+  const metaOf = (item) => (item.roles ? `${item.roles[0].title} · ${item.roles[0].dates}` : item.meta);
+
+  const paragraphs = (list = [], lede = false) =>
+    list.map((p, j) => (p.startsWith("## ") ? `<h3>${esc(p.slice(3))}</h3>` : `<p${lede && j === 0 ? ' class="post__lede"' : ""}>${esc(p)}</p>`)).join("");
+
   function tileHover(section, item) {
     if (section === "inspo" && item.kind !== "book") {
       return `<span class="tile__hover"><span class="tile__line">${esc(item.line)}</span></span>`;
     }
     const synopsis = section === "inspo" ? `<button class="btn js-synopsis" data-slug="${esc(item.slug)}" data-cursor="READ">Synopsis</button>` : "";
     return `<span class="tile__hover">
-        ${item.meta ? `<span class="tile__meta">${esc(item.meta)}</span>` : ""}
+        ${metaOf(item) ? `<span class="tile__meta">${esc(metaOf(item))}</span>` : ""}
         <span class="tile__title">${esc(item.title)}</span>
         ${section === "inspo" ? "" : `<span class="tile__line">${esc(item.line)}</span>`}
         ${synopsis}
@@ -188,9 +194,10 @@
     const it = list[idx];
     const prev = list[idx - 1];
     const next = list[idx + 1];
-    const body = (it.body || [])
-      .map((p, j) => (p.startsWith("## ") ? `<h3>${esc(p.slice(3))}</h3>` : `<p${j === 0 ? ' class="post__lede"' : ""}>${esc(p)}</p>`))
+    const roles = (it.roles || [])
+      .map((r) => `<section class="role"><h3>${esc(r.title)}</h3><div class="role__dates label muted">${esc(r.dates)}</div>${paragraphs(r.body)}</section>`)
       .join("");
+    const body = paragraphs(it.body, true) + (roles ? `<div class="roles">${roles}</div>` : "");
     const meta = [s.title, it.meta, sectionId === "inspo" ? "Synopsis" : ""].filter(Boolean).map((m) => `<span>${esc(m)}</span>`).join("");
     return `
       <div class="ov__bar label">
