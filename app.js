@@ -113,7 +113,6 @@
     const index = SECTIONS.map((s, i) => `<li><a href="#" class="js-jump" data-to="s-${s.id}"><span>${pad(i + 1)}</span>${esc(s.title)}</a></li>`).join("");
     const hero = `
       <section class="screen sec hero" id="s-home">
-        <div class="sec__num label">00 / XX</div>
         <div class="sec__titlewrap">${fitTitle(S.name.replace(" ", "\n"), "", "", "h1")}</div>
         <div class="hero__side">
           <p class="hero__intro">${esc(S.intro)}</p>
