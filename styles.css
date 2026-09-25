@@ -81,7 +81,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   z-index: 40;
   display: grid;
   grid-template-columns: 1fr auto;
-  align-items: center;
+  align-items: start;
   padding: 18px var(--gutter);
   mix-blend-mode: difference;
   pointer-events: none;
@@ -89,7 +89,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .nav > * { pointer-events: auto; }
 .nav__name { justify-self: start; font-size: 16px; font-weight: 900; font-stretch: 125%; letter-spacing: 0; transition: opacity 0.3s, transform 0.4s var(--spring); }
 .at-home:not(.is-locked) .nav__name { opacity: 0; transform: translateY(-8px); pointer-events: none; }
-.nav__right { display: flex; gap: 22px; justify-self: end; }
+.nav__right { display: grid; gap: 6px; justify-items: end; justify-self: end; }
 
 /* ---------- Screens ---------- */
 

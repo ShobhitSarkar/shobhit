@@ -30,8 +30,6 @@
   const fitTitle = (text, cls = "", max = "", tag = "h2") =>
     `<${tag} class="display fit ${cls}" ${max ? `data-max="${max}"` : ""} aria-label="${esc(text.replace(/\n/g, " "))}"><span class="fit__inner" aria-hidden="true">${letters(text)}</span></${tag}>`;
 
-  const place = (l) =>
-    `<div class="stack"><b>${esc(l.label)}</b><span>${esc(l.city)}</span><span class="clock" data-tz="${esc(l.timezone)}">--:--</span></div>`;
 
   const emailLink = (label = "Email", cls = "u-link label") =>
     `<a class="${cls} js-email" href="mailto:${esc(S.email)}" data-cursor="SAY HI">${esc(label)}</a>`;
@@ -120,7 +118,6 @@
           <div class="hero__cols label">
             <ul class="hero__index">${index}</ul>
             <div class="stack"><b>Say hi</b>${emailLink(S.email, "u-link")}</div>
-            ${S.locations.map(place).join("")}
           </div>
         </div>
         <button class="cue js-jump" data-to="s-${SECTIONS[0].id}" data-cursor="GO">${esc(SECTIONS[0].title)} <span class="cue__arrow">↓</span></button>
@@ -147,7 +144,6 @@
     const footer = `
       <footer class="screen footer${SECTIONS.length % 2 ? "" : " is-inverse"}" id="s-contact">
         <div class="footer__cols label">
-          ${S.locations.map(place).join("")}
           <div class="footer__links"><b>Quick links</b>${SECTIONS.map((s) => `<a href="#" class="u-link js-jump" data-to="s-${s.id}">${esc(s.title)}</a>`).join("")}</div>
           <div class="footer__links"><b>Elsewhere</b>${S.links.map((l) => `<a class="u-link" href="${esc(l.href)}" target="_blank" rel="noopener">${esc(l.label)}</a>`).join("")}${emailLink("Email", "u-link")}</div>
         </div>
@@ -162,7 +158,8 @@
       <header class="nav label">
         <a href="#" class="nav__name js-jump" data-to="s-home" aria-label="${esc(S.name)}, back to top">${esc(initials)}</a>
         <nav class="nav__right">
-          ${emailLink("Email")}
+          ${emailLink(S.email)}
+          <span class="clock" aria-label="Local time">--:--:--</span>
         </nav>
       </header>
       <main>${hero}${secs}${footer}</main>
@@ -403,12 +400,12 @@
   }
 
   function startClocks() {
+    const opts = { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: S.timezone };
     const tick = () => $$(".clock").forEach((el) => {
-      const opts = { weekday: "short", hour: "2-digit", minute: "2-digit" };
-      try { el.textContent = new Date().toLocaleString("en-GB", el.dataset.tz ? { ...opts, timeZone: el.dataset.tz } : opts); } catch { el.textContent = ""; }
+      try { el.textContent = new Date().toLocaleTimeString("en-GB", opts); } catch { el.textContent = ""; }
     });
     tick();
-    setInterval(tick, 15000);
+    setInterval(tick, 1000);
   }
 
   // ---------- Boot ----------

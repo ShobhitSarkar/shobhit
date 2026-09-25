@@ -12,10 +12,7 @@ window.SITE = {
   name: "Shobhit Sarkar",
   email: "hello@example.com", // TODO: your real address
   intro: "AI engineer. I build things that think a little, write about what I learn, and collect what inspires me.",
-  locations: [
-    { label: "Now", city: "Davenport, IA", timezone: "America/Chicago" },
-    { label: "Grew up", city: "Bangalore, IN", timezone: "Asia/Kolkata" },
-  ],
+  timezone: "America/Chicago", // the header clock shows your time, ticking by the second
   links: [
     { label: "GitHub", href: "https://github.com/ShobhitSarkar" },
     { label: "LinkedIn", href: "#" }, // TODO
