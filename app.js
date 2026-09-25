@@ -228,8 +228,11 @@
       </article>`;
   }
 
+  // The route lives in memory too, so the site still works where history is unavailable (sandboxed previews).
+  let current = location.hash;
+
   function parseRoute() {
-    const [section, slug] = location.hash.replace(/^#\/?/, "").split("/").map(decodeURIComponent);
+    const [section, slug] = current.replace(/^#\/?/, "").split("/").map(decodeURIComponent);
     return sectionById(section) ? { section, slug } : null;
   }
 
@@ -262,8 +265,8 @@
   }
 
   function navigate(hash, replace = false) {
-    const url = hash || location.pathname + location.search;
-    history[replace ? "replaceState" : "pushState"](null, "", url);
+    current = hash;
+    try { history[replace ? "replaceState" : "pushState"](null, "", hash || location.pathname + location.search); } catch { /* in-memory only */ }
     if (!hash) document.title = S.name;
     route();
   }
@@ -319,9 +322,9 @@
   async function copyEmail() {
     try {
       await navigator.clipboard.writeText(S.email);
-      toast(`<span>${EMAIL_QUIPS[Math.floor(Math.random() * EMAIL_QUIPS.length)]}</span><a href="mailto:${esc(S.email)}">Open mail app</a>`);
+      toast(`<span>${EMAIL_QUIPS[Math.floor(Math.random() * EMAIL_QUIPS.length)]}</span><a href="mailto:${esc(S.email)}">${esc(S.email)}</a>`);
     } catch {
-      location.href = "mailto:" + S.email;
+      toast(`<span>Here it is:</span><a href="mailto:${esc(S.email)}">${esc(S.email)}</a>`);
     }
   }
 
@@ -367,7 +370,7 @@
       }
     });
 
-    addEventListener("popstate", route);
+    addEventListener("popstate", () => { current = location.hash; route(); });
     addEventListener("resize", () => fitAll());
   }
 
