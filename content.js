@@ -38,17 +38,17 @@ window.SITE = {
       body: ["TODO — the team, what you owned, and what changed because you were there."],
     },
     {
-      slug: "kingland-systems", title: "Kingland Systems", meta: "Role · dates", logo: "", // TODO: add logos/kingland-systems.svg
+      slug: "kingland-systems", title: "Kingland Systems", meta: "Role · dates", logo: "logos/kingland-systems.svg", // TODO: role and dates
       line: "TODO — one line on what you did here.",
       body: ["TODO — the team, what you owned, and what changed because you were there."],
     },
     {
-      slug: "iowa-state-university", title: "Iowa State University", meta: "Role · dates", logo: "", // TODO: add logos/iowa-state.svg
+      slug: "iowa-state-university", title: "Iowa State University", meta: "Role · dates", logo: "logos/iowa-state.svg", // TODO: role and dates
       line: "TODO — one line on what you did here.",
       body: ["TODO — the team, what you owned, and what changed because you were there."],
     },
     {
-      slug: "iowa-state-university-2", title: "Iowa State University", meta: "Role · dates", logo: "", // TODO: second role
+      slug: "iowa-state-university-2", title: "Iowa State University", meta: "Role · dates", logo: "logos/iowa-state.svg", // TODO: second role and dates
       line: "TODO — one line on what you did here.",
       body: ["TODO — the team, what you owned, and what changed because you were there."],
     },
