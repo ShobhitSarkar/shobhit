@@ -10,7 +10,6 @@
 //   body   – array of paragraphs; a string starting with "## " becomes a subheading
 window.SITE = {
   name: "Shobhit Sarkar",
-  role: "AI Engineer",
   email: "hello@example.com", // TODO: your real address
   intro: "AI engineer. I build things that think a little, write about what I learn, and collect what inspires me.",
   locations: [
@@ -22,13 +21,9 @@ window.SITE = {
     { label: "LinkedIn", href: "#" }, // TODO
   ],
 
-  // Leave empty to use the built-in (very small, regex-powered) agent.
-  // Set to a URL that accepts POST { messages: [{role, content}] } and returns { reply } to use a real model.
-  agent: { endpoint: "" },
-
   sections: [
     { id: "work", title: "Work" },
-    { id: "blog", title: "Blog" },
+    { id: "writes", title: "Writes" },
     { id: "inspo", title: "Inspo" },
     { id: "projects", title: "Projects" },
   ],
@@ -61,7 +56,7 @@ window.SITE = {
     },
   ],
 
-  blog: [
+  writes: [
     ["agents-are-just-loops", "Agents are just loops", "Mar 2026", "The unglamorous truth about building agents that work."],
     ["evals-first", "Write the evals first", "Feb 2026", "Why I stopped shipping prompts without a test suite."],
     ["small-models", "In defence of small models", "Jan 2026", "Latency is a feature. So is your cloud bill."],
@@ -105,7 +100,7 @@ window.SITE = {
   ],
 
   projects: [
-    { slug: "this-site", title: "This site", meta: "2026", line: "Big letters, small grids, one tiny agent.",
+    { slug: "this-site", title: "This site", meta: "2026", line: "Big letters, small grids, a few somersaults.",
       body: ["Hand-sketched, then built with plain HTML, CSS and JS. No framework, no build step.", "## Why", "Because a portfolio should feel like a place, not a résumé."] },
     { slug: "project-two", title: "Project Two", meta: "2025", line: "SAMPLE — an agent that does one boring thing very well.", body: ["SAMPLE — what it is, why it exists, how it works, link to the repo."] },
     { slug: "project-three", title: "Project Three", meta: "2025", line: "SAMPLE — an eval harness for flaky prompts.", body: ["SAMPLE — replace me."] },

@@ -77,7 +77,7 @@
       return `<span class="tile__book"><span>${esc(item.title)}</span><span class="muted">${esc(item.meta || "")}</span></span>`;
     }
     if (item.image) return `<img src="${esc(item.image)}" alt="" loading="lazy">`;
-    if (section === "blog") return `<span class="tile__n">${pad(i + 1)}</span><span class="tile__peek">${esc(item.title)}</span>`;
+    if (section === "writes") return `<span class="tile__n">${pad(i + 1)}</span><span class="tile__peek">${esc(item.title)}</span>`;
     return art(item.slug);
   }
 
@@ -120,7 +120,7 @@
           <div class="hero__rule"></div>
           <div class="hero__cols label">
             <ul class="hero__index">${index}</ul>
-            <div class="stack"><b>Say hi</b>${emailLink(S.email, "u-link")}<button class="u-link js-agent-open" style="justify-self:start" data-cursor="CHAT">Talk to my agent</button></div>
+            <div class="stack"><b>Say hi</b>${emailLink(S.email, "u-link")}</div>
             ${S.locations.map(place).join("")}
           </div>
         </div>
@@ -163,19 +163,11 @@
       <header class="nav label">
         <a href="#" class="nav__name js-jump" data-to="s-home" aria-label="${esc(S.name)}, back to top">${esc(initials)}</a>
         <nav class="nav__right">
-          <button class="u-link js-agent-open" data-cursor="CHAT">Talk to my agent</button>
           ${emailLink("Email")}
         </nav>
       </header>
       <main>${hero}${secs}${footer}</main>
       <div class="overlay" id="overlay" hidden></div>
-      <button class="agent-fab js-agent-toggle" data-cursor="CHAT"><span class="dot"></span>Talk to my agent</button>
-      <aside class="agent" id="agent" hidden aria-label="Chat with Shobhit's agent">
-        <div class="agent__head"><b>Shobhit's agent</b><span class="agent__status label"><span class="dot"></span>online-ish</span><button class="label u-link js-agent-toggle">Close</button></div>
-        <div class="agent__log" id="agent-log" aria-live="polite"></div>
-        <div class="agent__chips" id="agent-chips"></div>
-        <form class="agent__form" id="agent-form"><input id="agent-input" autocomplete="off" placeholder="Ask me anything…" aria-label="Message"><button>Send</button></form>
-      </aside>
       <div class="toast" id="toast" role="status"></div>
       <div class="cursor" id="cursor"><span></span></div>`;
   }
@@ -217,7 +209,7 @@
         <div>
           <div class="post__meta label muted">${meta}</div>
           <div class="post__body">${body}</div>
-          <div class="post__cta"><b>Thoughts? Disagree?</b>${emailLink("Email me →", "btn js-email")}</div>
+          ${sectionId === "writes" ? `<div class="post__cta"><b>Thoughts? Disagree?</b>${emailLink("Email me →", "btn js-email")}</div>` : ""}
           <nav class="post__nav label">
             ${prev ? `<a class="u-link js-route" href="#/${sectionId}/${esc(prev.slug)}">← ${esc(prev.title)}</a>` : "<span></span>"}
             ${next ? `<a class="u-link js-route" href="#/${sectionId}/${esc(next.slug)}">${esc(next.title)} →</a>` : "<span></span>"}
@@ -319,7 +311,7 @@
     toastTimer = setTimeout(() => t.classList.remove("is-on"), 3800);
   }
 
-  const EMAIL_QUIPS = ["Copied. Go on, say hi.", "Copied! My inbox is friendly.", "Copied. I reply faster than my agent.", "In your clipboard. No pressure. (Some pressure.)"];
+  const EMAIL_QUIPS = ["Copied. Go on, say hi.", "Copied! My inbox is friendly.", "Copied. I actually reply.", "In your clipboard. No pressure. (Some pressure.)"];
   async function copyEmail() {
     try {
       await navigator.clipboard.writeText(S.email);
@@ -347,17 +339,12 @@
       const r = t.closest(".js-route");
       if (r) { e.preventDefault(); return navigate(r.getAttribute("href")); }
       if (t.closest(".js-close") || t.classList.contains("js-backdrop")) { e.preventDefault(); return closeOverlay(); }
-      if (t.closest(".js-agent-open")) return toggleAgent(true);
-      if (t.closest(".js-agent-toggle")) return toggleAgent();
       const tl = t.closest(".tile");
       if (tl) return openTile(tl);
     });
 
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") {
-        if (!$("#agent").hidden) return toggleAgent(false);
-        return closeOverlay();
-      }
+      if (e.key === "Escape") return closeOverlay();
       const tl = e.target.closest?.(".tile");
       if (tl && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openTile(tl); }
     });
@@ -425,105 +412,11 @@
     setInterval(tick, 15000);
   }
 
-  // ---------- Talk to my agent ----------
-
-  const history_ = [];
-
-  function toggleAgent(force) {
-    const a = $("#agent");
-    const open = force ?? a.hidden;
-    a.hidden = !open;
-    if (open) {
-      if (!history_.length) greet();
-      setTimeout(() => $("#agent-input").focus(), 200);
-    }
-  }
-
-  function addMsg(role, html) {
-    const log = $("#agent-log");
-    const m = document.createElement("div");
-    m.className = "msg " + (role === "user" ? "msg--me" : "msg--bot");
-    m.innerHTML = html;
-    log.appendChild(m);
-    log.scrollTop = log.scrollHeight;
-    return m;
-  }
-
-  function setChips(list) {
-    $("#agent-chips").innerHTML = list.map((q) => `<button class="chip" type="button">${esc(q)}</button>`).join("");
-  }
-
-  function greet() {
-    const hi = `Hi, I'm Shobhit's agent. Shobhit is an ${S.role}, so obviously there's an agent. Ask me about work, projects, writing, or how to get in touch.`;
-    history_.push({ role: "assistant", content: hi });
-    addMsg("assistant", esc(hi));
-    setChips(["What do you work on?", "Show me projects", "What are you reading?", "How do I reach you?"]);
-  }
-
-  const listOf = (id, n = 3) => items(id).slice(0, n).map((it) => `• <a href="#/${id}/${esc(it.slug)}" class="js-route">${esc(it.title)}</a>`).join("\n");
-
-  // A deliberately small, honest agent. Swap in a real one via SITE.agent.endpoint.
-  const RULES = [
-    [/\b(hi|hey|hello|yo|sup|hiya)\b/i, () => "Hey! What would you like to know?"],
-    [/(email|contact|reach|hire|talk|call|meet|coffee)/i, () => `Fastest route is email: <a href="mailto:${esc(S.email)}">${esc(S.email)}</a>. Shobhit reads everything and replies to most things.`],
-    [/(work|job|experience|company|career|resume|cv)/i, () => `Recent work:\n${items("work").slice(0, 3).map((w) => `• ${esc(w.title)}: ${esc(w.meta || "")}`).join("\n")}\n\n<a href="#/work" class="js-route">See all work →</a>`],
-    [/(project|built|build|side|github|code)/i, () => `A few things Shobhit built:\n${listOf("projects")}\n\n<a href="#/projects" class="js-route">All projects →</a>`],
-    [/(blog|write|writing|post|article|essay)/i, () => `Latest writing:\n${listOf("blog")}`],
-    [/(read|book|inspo|inspir|favou?rite)/i, () => `On the shelf:\n${items("inspo").filter((i) => i.kind === "book").slice(0, 3).map((b) => `• <a href="#/inspo/${esc(b.slug)}" class="js-route">${esc(b.title)}</a>`).join("\n")}`],
-    [/(where|live|based|located|from|bangalore|bengaluru|davenport)/i, () => `Shobhit lives in ${esc(S.locations[0].city)} and grew up in ${esc(S.locations[1].city)}, and goes back at least once a year.`],
-    [/(ai|llm|agent|model|ml|machine learning|stack|skills?)/i, () => "Agents, evals, retrieval, and getting models to behave in production. The blog has the long version."],
-    [/(who are you|are you (real|human|ai)|what are you)/i, () => "I'm a few dozen lines of JavaScript with ambitions. The real Shobhit is one email away."],
-    [/(joke|funny|lol)/i, () => "Why did the LLM cross the road? It was 94% confident there was a road."],
-  ];
-
-  function localReply(text) {
-    for (const [re, fn] of RULES) if (re.test(text)) return fn();
-    return `Good question. Honestly, it's above my pay grade (I'm paid in regex). Try asking Shobhit directly: <a href="mailto:${esc(S.email)}">${esc(S.email)}</a>`;
-  }
-
-  async function reply(text) {
-    if (S.agent?.endpoint) {
-      try {
-        const res = await fetch(S.agent.endpoint, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ messages: history_ }),
-        });
-        if (res.ok) {
-          const data = await res.json();
-          if (data.reply) return esc(data.reply);
-        }
-      } catch { /* fall through to the local agent */ }
-    }
-    return localReply(text);
-  }
-
-  function bindAgent() {
-    const form = $("#agent-form");
-    const input = $("#agent-input");
-    const send = async (text) => {
-      text = text.trim();
-      if (!text) return;
-      input.value = "";
-      setChips([]);
-      history_.push({ role: "user", content: text });
-      addMsg("user", esc(text));
-      const typing = addMsg("assistant", '<span class="typing"><span></span><span></span><span></span></span>');
-      const [answer] = await Promise.all([reply(text), new Promise((r) => setTimeout(r, 500 + Math.random() * 600))]);
-      typing.innerHTML = answer;
-      history_.push({ role: "assistant", content: typing.textContent });
-      $("#agent-log").scrollTop = $("#agent-log").scrollHeight;
-    };
-    form.addEventListener("submit", (e) => { e.preventDefault(); send(input.value); });
-    $("#agent-chips").addEventListener("click", (e) => { const c = e.target.closest(".chip"); if (c) send(c.textContent); });
-  }
-
   // ---------- Boot ----------
 
   renderHome();
   bindEvents();
   bindPointer();
-  bindAgent();
   startClocks();
   observeScreens();
   fitAll();
