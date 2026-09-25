@@ -14,7 +14,7 @@ Live at [shobhit.fyi](https://shobhit.fyi), served by GitHub Pages from the root
 
 Everything lives in `content.js`: sections, work, writes, inspo and projects. Placeholders are marked `SAMPLE` / `TODO`.
 
-- **Work tiles** use `logo` (a transparent PNG/SVG path); without one, the company name is set as a wordmark.
+- **Work tiles** use `logo`, a file in `logos/` (SVG or transparent PNG). Only its shape is used, drawn in black or white to match the screen. Without one, the company name is set as a wordmark.
 - **Inspo** items are `kind: "image"` (one-liner on hover) or `kind: "book"` (Synopsis button → post page).
 - Tiles without an `image` get a generated black and white pattern.
 

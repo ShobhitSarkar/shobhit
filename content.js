@@ -5,7 +5,8 @@
 //   line   – the one-liner shown on hover
 //   meta   – small label (date, role, year…)
 //   image  – optional image path; without one a generated pattern is drawn
-//   logo   – (work only) transparent-background logo path; without one the name is set as a wordmark
+//   logo   – (work only) logo file (SVG or transparent PNG). Only its shape is used, drawn in the screen's colour,
+//            so any logo turns black or white to match. Without one the name is set as a wordmark.
 //   kind   – (inspo only) "image" | "book"
 //   body   – array of paragraphs; a string starting with "## " becomes a subheading
 window.SITE = {
@@ -27,29 +28,29 @@ window.SITE = {
 
   work: [
     {
-      slug: "company-one", title: "Company One", meta: "AI Engineer · 2024 — now", logo: "",
-      line: "SAMPLE — building LLM-powered agents for internal tooling.",
-      body: [
-        "SAMPLE — Describe the team, what you owned and what changed because you were there.",
-        "## Highlights",
-        "Shipped an agent that turned a two-day workflow into a ten-minute one.",
-        "Built the evaluation harness the team now uses before every model upgrade.",
-      ],
+      slug: "john-deere", title: "John Deere", meta: "Role · dates", logo: "logos/john-deere.svg", // TODO: role and dates
+      line: "TODO — one line on what you did here.",
+      body: ["TODO — the team, what you owned, and what changed because you were there."],
     },
     {
-      slug: "company-two", title: "Company Two", meta: "ML Engineer · 2022 — 2024", logo: "",
-      line: "SAMPLE — retrieval, ranking and the pipelines under them.",
-      body: ["SAMPLE — What you built, who used it, and one number you're proud of."],
+      slug: "collins-aerospace", title: "Collins Aerospace", meta: "Role · dates", logo: "logos/collins-aerospace.svg", // TODO
+      line: "TODO — one line on what you did here.",
+      body: ["TODO — the team, what you owned, and what changed because you were there."],
     },
     {
-      slug: "company-three", title: "Company Three", meta: "Software Engineer · 2021 — 2022", logo: "",
-      line: "SAMPLE — backend services and a lot of on-call.",
-      body: ["SAMPLE — Keep it short. Link out to anything public."],
+      slug: "kingland-systems", title: "Kingland Systems", meta: "Role · dates", logo: "", // TODO: add logos/kingland-systems.svg
+      line: "TODO — one line on what you did here.",
+      body: ["TODO — the team, what you owned, and what changed because you were there."],
     },
     {
-      slug: "research-lab", title: "Research Lab", meta: "Research Assistant · 2020 — 2021", logo: "",
-      line: "SAMPLE — NLP research, one paper, many GPU hours.",
-      body: ["SAMPLE — The question, the approach, what you found."],
+      slug: "iowa-state-university", title: "Iowa State University", meta: "Role · dates", logo: "", // TODO: add logos/iowa-state.svg
+      line: "TODO — one line on what you did here.",
+      body: ["TODO — the team, what you owned, and what changed because you were there."],
+    },
+    {
+      slug: "iowa-state-university-2", title: "Iowa State University", meta: "Role · dates", logo: "", // TODO: second role
+      line: "TODO — one line on what you did here.",
+      body: ["TODO — the team, what you owned, and what changed because you were there."],
     },
   ],
 

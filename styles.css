@@ -249,7 +249,15 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .tile__n { position: absolute; top: 8px; left: 10px; font-size: 11px; font-weight: 600; font-variant-numeric: tabular-nums; }
 .grid:not(.grid--full) .tile__peek { display: none; }
 .tile__peek { position: absolute; left: 10px; right: 10px; bottom: 10px; font-weight: 800; font-stretch: 125%; text-transform: uppercase; font-size: 13px; line-height: 1; }
-.tile__wordmark { font-weight: 900; font-stretch: 125%; text-transform: uppercase; text-align: center; line-height: 0.9; font-size: clamp(12px, 1.3vw, 18px); }
+/* Logos are used as a mask, so whatever colours the file has, it's drawn in the screen's text colour */
+.tile__logo {
+  width: 88%;
+  height: 60%;
+  background: currentColor;
+  -webkit-mask: var(--logo) center / contain no-repeat;
+  mask: var(--logo) center / contain no-repeat;
+}
+.tile__wordmark { font-weight: 900; font-stretch: 125%; text-transform: uppercase; text-align: center; line-height: 0.9; font-size: clamp(11px, 1.05vw, 15px); overflow-wrap: anywhere; }
 .grid--full .tile__wordmark { font-size: clamp(16px, 1.8vw, 24px); }
 .tile__book {
   position: absolute; inset: 14% 22%;

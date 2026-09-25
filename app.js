@@ -68,7 +68,7 @@
   function tileFace(section, item, i) {
     if (section === "work") {
       return item.logo
-        ? `<img src="${esc(item.logo)}" alt="" loading="lazy">`
+        ? `<span class="tile__logo" style="--logo: url('${esc(item.logo)}')"></span>`
         : `<span class="tile__wordmark">${esc(item.title)}</span>`;
     }
     if (section === "inspo" && item.kind === "book") {
