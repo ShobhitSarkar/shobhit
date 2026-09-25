@@ -10,7 +10,7 @@
 //   body   – array of paragraphs; a string starting with "## " becomes a subheading
 window.SITE = {
   name: "Shobhit Sarkar",
-  email: "hello@example.com", // TODO: your real address
+  email: "hi@shobhit.fyi",
   intro: "AI engineer. I build things that think a little, write about what I learn, and collect what inspires me.",
   timezone: "America/Chicago", // the landing-screen clock shows your time, ticking by the second
   links: [

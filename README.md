@@ -8,7 +8,7 @@ Plain HTML/CSS/JS, no build step. To run locally:
 python3 -m http.server 8000   # then open http://localhost:8000
 ```
 
-Deploy by pointing GitHub Pages (or any static host) at the repo root.
+Live at [shobhit.fyi](https://shobhit.fyi), served by GitHub Pages from the root of `main`. The `CNAME` file holds the custom domain.
 
 ## Editing content
 
