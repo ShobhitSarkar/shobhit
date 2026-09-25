@@ -7,7 +7,8 @@
 //   image  – optional image path; without one a generated pattern is drawn
 //   logo   – (work only) logo file (SVG or transparent PNG). Only its shape is used, drawn in the screen's colour,
 //            so any logo turns black or white to match. Without one the name is set as a wordmark.
-//   kind   – (inspo only) "image" | "book"
+//   kind   – (inspo only) "image" | "music" | "book". Images and music show their picture in black and white,
+//            colour on hover, with the one-liner; books are set in type and open a synopsis page
 //   body   – array of paragraphs; a string starting with "## " becomes a subheading, "- " a bullet point
 //   roles  – (work only) one entry per role at that company, newest first: { title, dates, body }.
 //            The tile shows the latest role; the company page lists them all as a timeline.
@@ -130,22 +131,41 @@ window.SITE = {
   })),
 
   inspo: [
-    { slug: "geb", kind: "book", title: "Gödel, Escher, Bach", meta: "Douglas Hofstadter", line: "Strange loops, all the way down.",
-      body: ["SAMPLE SYNOPSIS — why this book stuck with you, in a paragraph or three.", "## What I took from it", "Self-reference is where the interesting things happen."] },
-    { slug: "tokyo-at-night", kind: "image", title: "Tokyo at night", line: "Every sign a small UI." },
-    { slug: "design-of-everyday-things", kind: "book", title: "The Design of Everyday Things", meta: "Don Norman", line: "If it needs a label, it's a bad door.",
-      body: ["SAMPLE SYNOPSIS — replace with your take."] },
-    { slug: "swiss-posters", kind: "image", title: "Swiss posters", line: "Grids, but make it loud." },
-    { slug: "brutalism", kind: "image", title: "Concrete", line: "Honest materials, no apologies." },
-    { slug: "the-idea-factory", kind: "book", title: "The Idea Factory", meta: "Jon Gertner", line: "Bell Labs and the art of patient ambition.",
-      body: ["SAMPLE SYNOPSIS — replace with your take."] },
-    { slug: "type-specimens", kind: "image", title: "Type specimens", line: "The quick brown fox, forever." },
-    { slug: "shape-of-the-sky", kind: "image", title: "Shape of the sky", line: "Blue at 6pm is a different blue." },
-    { slug: "creative-act", kind: "book", title: "The Creative Act", meta: "Rick Rubin", line: "Pay attention. That's most of it.",
-      body: ["SAMPLE SYNOPSIS — replace with your take."] },
-    { slug: "old-computers", kind: "image", title: "Old computers", line: "Beige boxes that changed everything." },
-    { slug: "sicp", kind: "book", title: "SICP", meta: "Abelson & Sussman", line: "Programs are for people to read.",
-      body: ["SAMPLE SYNOPSIS — replace with your take."] },
+    {
+      slug: "the-da-vinci-code", kind: "book", title: "The Da Vinci Code", meta: "Dan Brown", line: "Codes, cults and the Louvre after dark.",
+      body: [
+        "A murder in the Louvre sends symbologist Robert Langdon and cryptologist Sophie Neveu after a trail of clues hidden in Leonardo da Vinci's work, and a secret that a centuries-old society has been guarding.",
+        "## Why it's here",
+        "TODO — what stuck with you.",
+      ],
+    },
+    { slug: "neverender-rampa-remix", kind: "music", title: "Neverender (Rampa Remix)", image: "inspo/neverender.jpg", line: "Neverender (Rampa Remix) — Justice & Tame Impala" },
+    {
+      slug: "the-48-laws-of-power", kind: "book", title: "The 48 Laws of Power", meta: "Robert Greene", line: "Three thousand years of power, distilled.",
+      body: [
+        "Forty-eight rules for gaining, holding and defending power, each one argued through stories from history: courtiers, generals, con artists and statesmen.",
+        "## Why it's here",
+        "TODO — what stuck with you.",
+      ],
+    },
+    { slug: "te-estoy-correteando", kind: "music", title: "Te Estoy Correteando", image: "inspo/te-estoy-correteando.jpg", line: "Te Estoy Correteando — LATIN MAFIA & Fred again.." },
+    {
+      slug: "the-psychology-of-money", kind: "book", title: "The Psychology of Money", meta: "Morgan Housel", line: "Behaviour beats spreadsheets.",
+      body: [
+        "Short stories about how people actually think about money, and why how you behave with it matters more than how much you know about it.",
+        "## Why it's here",
+        "TODO — what stuck with you.",
+      ],
+    },
+    { slug: "juicy", kind: "music", title: "Juicy", image: "inspo/juicy.jpg", line: "Juicy — The Notorious B.I.G." },
+    {
+      slug: "digital-fortress", kind: "book", title: "Digital Fortress", meta: "Dan Brown", line: "An unbreakable code inside the NSA.",
+      body: [
+        "NSA cryptographer Susan Fletcher discovers a code that the agency's code-breaking supercomputer can't crack, and a race begins to stop it before it compromises the country's intelligence systems.",
+        "## Why it's here",
+        "TODO — what stuck with you.",
+      ],
+    },
   ],
 
   projects: [
