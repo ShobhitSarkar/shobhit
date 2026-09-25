@@ -24,10 +24,10 @@ window.SITE = {
   agent: { endpoint: "" },
 
   sections: [
-    { id: "work", title: "Work", blurb: "Places I've shipped things." },
-    { id: "blog", title: "Blog", blurb: "Notes, essays and half-finished thoughts." },
-    { id: "inspo", title: "Inspo", blurb: "Books, pictures and things I keep coming back to." },
-    { id: "projects", title: "Projects", blurb: "Stuff I built because I couldn't not." },
+    { id: "work", title: "Work" },
+    { id: "blog", title: "Blog" },
+    { id: "inspo", title: "Inspo" },
+    { id: "projects", title: "Projects" },
   ],
 
   work: [

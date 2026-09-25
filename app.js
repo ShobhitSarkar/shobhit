@@ -13,6 +13,8 @@
   const pad = (n) => String(n).padStart(2, "0");
   const items = (id) => S[id] || [];
   const sectionById = (id) => SECTIONS.find((s) => s.id === id);
+  // Screens alternate black / white: the landing screen is black, so the first section is white.
+  const isInverse = (id) => SECTIONS.findIndex((s) => s.id === id) % 2 === 0;
 
   // ---------- Small render helpers ----------
 
@@ -34,7 +36,7 @@
     for (const c of seed) h = Math.imul(h ^ c.charCodeAt(0), 16777619);
     const rnd = () => ((h = Math.imul(h ^ (h >>> 15), 2246822507) ^ Math.imul(h ^ (h >>> 13), 3266489909)) >>> 0) / 4294967296;
     const k = Math.floor(rnd() * 5);
-    const W = "#fff";
+    const W = "currentColor";
     let g = "";
     if (k === 0) {
       const n = 3 + Math.floor(rnd() * 5);
@@ -45,7 +47,7 @@
       for (let i = 0; i < n; i++) g += `<rect x="0" y="${(i * 100) / n}" width="100" height="${(50 / n) * (0.3 + rnd())}" fill="${W}"/>`;
     } else if (k === 2) {
       g += `<rect x="${rnd() * 30}" y="${rnd() * 30}" width="${40 + rnd() * 30}" height="${40 + rnd() * 30}" fill="${W}"/>`;
-      g += `<circle cx="${40 + rnd() * 40}" cy="${40 + rnd() * 40}" r="${14 + rnd() * 14}" fill="#000" stroke="${W}" stroke-width="1.5"/>`;
+      g += `<circle cx="${40 + rnd() * 40}" cy="${40 + rnd() * 40}" r="${14 + rnd() * 14}" style="fill: var(--bg)" stroke="${W}" stroke-width="1.5"/>`;
     } else if (k === 3) {
       for (let x = 0; x < 5; x++) for (let y = 0; y < 5; y++) {
         const r = rnd() * 8;
@@ -91,7 +93,7 @@
     // Pictures don't open anywhere; everything else opens a post-style page.
     const opens = !(section === "inspo" && item.kind !== "book");
     return `<div class="tile tile--${kind}" role="button" tabindex="0" style="--i:${i}"
-        data-section="${section}" data-slug="${esc(item.slug)}" data-opens="${opens}"
+        data-section="${section}" data-slug="${esc(item.slug)}" data-opens="${opens}" data-cursor=""
         aria-label="${esc(item.title)}${item.line ? " — " + esc(item.line) : ""}">
         <span class="tile__face">${tileFace(section, item, i)}</span>
         ${tileHover(section, item)}
@@ -118,18 +120,13 @@
       const list = items(s.id);
       const next = SECTIONS[i + 1];
       return `
-        <section class="screen sec" id="s-${s.id}" data-name="${esc(s.title)}">
+        <section class="screen sec${isInverse(s.id) ? " is-inverse" : ""}" id="s-${s.id}" data-name="${esc(s.title)}">
           <div class="sec__num label">${pad(i + 1)} / ${pad(SECTIONS.length)}</div>
           <div class="sec__titlewrap">
             ${fitTitle(s.title, "", "34vh")}
-            <p class="sec__blurb">${esc(s.blurb)}</p>
           </div>
           <div class="sec__grid">
             <div class="grid">${list.slice(0, PREVIEW_COUNT).map((it, j) => tile(s.id, it, j, false)).join("")}</div>
-            <div class="sec__more label">
-              <span class="muted">${list.length} ${list.length === 1 ? "entry" : "entries"}</span>
-              <a href="#/${s.id}" class="u-link js-route" data-cursor="MORE">View all →</a>
-            </div>
           </div>
           <button class="cue js-jump" data-to="${next ? "s-" + next.id : "s-contact"}" data-cursor="GO">
             ${esc(next ? next.title : "Say hi")} <span class="cue__arrow">↓</span>
@@ -138,15 +135,12 @@
     }).join("");
 
     const footer = `
-      <footer class="screen footer" id="s-contact" data-name="Contact">
+      <footer class="screen footer${SECTIONS.length % 2 ? "" : " is-inverse"}" id="s-contact" data-name="Contact">
         <div class="footer__cols label">
           <div class="stack"><b>${esc(S.location.label)}</b><span>${esc(S.location.city)}</span><span class="clock" data-tz="${esc(S.location.timezone)}">--:--</span></div>
           <div class="stack"><b>You</b><span>Wherever you are</span><span class="clock">--:--</span></div>
           <div class="footer__links"><b>Quick links</b>${SECTIONS.map((s) => `<a href="#" class="u-link js-jump" data-to="s-${s.id}">${esc(s.title)}</a>`).join("")}</div>
           <div class="footer__links"><b>Elsewhere</b>${S.links.map((l) => `<a class="u-link" href="${esc(l.href)}" target="_blank" rel="noopener">${esc(l.label)}</a>`).join("")}${emailLink("Email", "u-link")}</div>
-        </div>
-        <div>
-          <a class="footer__big js-email" href="mailto:${esc(S.email)}" data-cursor="SAY HI">${fitTitle("Let's talk", "")}</a>
         </div>
         <div class="footer__bottom label muted">
           <span>© ${new Date().getFullYear()} ${esc(S.name)}</span>
@@ -181,20 +175,15 @@
 
   const overlay = () => $("#overlay");
 
+  // Just the grid, centred. Clicking the empty space around it (or Esc) closes it.
   function renderGrid(sectionId) {
-    const s = sectionById(sectionId);
-    const i = SECTIONS.indexOf(s);
     const list = items(sectionId);
+    const cols = list.length <= 4 ? list.length : list.length <= 9 ? 3 : 4;
+    const rows = Math.ceil(list.length / cols);
     return `
-      <div class="ov__bar label">
-        <span>${pad(i + 1)} / ${esc(s.title)} — ${list.length} entries</span>
-        <a href="#" class="u-link js-close" data-cursor="BYE">Close ✕</a>
-      </div>
-      <div class="ov__head">
-        ${fitTitle(s.title, "", "30vh")}
-        <p class="sec__blurb">${esc(s.blurb)}</p>
-      </div>
-      <div class="ov__body"><div class="grid grid--full">${list.map((it, j) => tile(sectionId, it, j, true)).join("")}</div></div>`;
+      <div class="ov__grid js-backdrop" data-cursor="CLOSE" aria-label="${esc(sectionById(sectionId).title)}">
+        <div class="grid grid--full" style="--cols:${cols}; --rows:${rows}">${list.map((it, j) => tile(sectionId, it, j, true)).join("")}</div>
+      </div>`;
   }
 
   function renderPost(sectionId, slug) {
@@ -254,6 +243,7 @@
     const html = r.slug ? renderPost(r.section, r.slug) : renderGrid(r.section);
     if (html == null) return navigate("#/" + r.section, true);
     ov.innerHTML = html;
+    ov.classList.toggle("is-inverse", isInverse(r.section));
     ov.scrollTop = 0;
     const wasHidden = ov.hidden;
     ov.hidden = false;
@@ -345,7 +335,7 @@
       if (jump) { e.preventDefault(); return document.getElementById(jump.dataset.to)?.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth" }); }
       const r = t.closest(".js-route");
       if (r) { e.preventDefault(); return navigate(r.getAttribute("href")); }
-      if (t.closest(".js-close")) { e.preventDefault(); return closeOverlay(); }
+      if (t.closest(".js-close") || t.classList.contains("js-backdrop")) { e.preventDefault(); return closeOverlay(); }
       if (t.closest(".js-agent-open")) return toggleAgent(true);
       if (t.closest(".js-agent-toggle")) return toggleAgent();
       const tl = t.closest(".tile");

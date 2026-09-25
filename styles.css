@@ -5,10 +5,25 @@
   --line: rgba(255, 255, 255, 0.9);
   --accent: #fff;      /* hover card colour — swap for a blue to bring back the sketch's "on blue" */
   --accent-ink: #000;  /* text on the accent */
+  --hatch: rgba(0, 0, 0, 0.14);
+  color-scheme: dark;
   --gutter: clamp(16px, 3vw, 44px);
   --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
   --ease: cubic-bezier(0.2, 0.9, 0.2, 1);
   --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Alternate screens flip to black on white. Everything inside reads the same tokens. */
+.is-inverse {
+  --bg: #fff;
+  --fg: #000;
+  --muted: #6e6e6e;
+  --line: rgba(0, 0, 0, 0.9);
+  --accent: #000;
+  --accent-ink: #fff;
+  --hatch: rgba(255, 255, 255, 0.2);
+  background: var(--bg);
+  color: var(--fg);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -84,7 +99,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   min-height: 100svh;
   scroll-snap-align: start;
   padding: 80px var(--gutter) 28px;
-  border-bottom: 1.5px solid var(--line);
+  background: var(--bg);
+  color: var(--fg);
 }
 
 .display {
@@ -158,9 +174,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 }
 .sec__num { grid-area: num; }
 .sec__titlewrap { grid-area: title; align-self: center; min-width: 0; }
-.sec__blurb { margin: 18px 0 0; max-width: 32ch; font-size: clamp(16px, 1.4vw, 20px); font-weight: 500; color: var(--muted); }
 .sec__grid { grid-area: grid; align-self: center; }
-.sec__more { display: flex; justify-content: space-between; margin-top: 12px; }
 
 .cue {
   grid-area: cue;
@@ -189,7 +203,12 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   grid-template-columns: repeat(3, 1fr);
   gap: clamp(8px, 1vw, 14px);
 }
-.grid--full { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
+.grid--full {
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  gap: 16px;
+  /* As wide as possible while every row still fits on screen */
+  width: min(100%, 1100px, calc((100svh - 150px) * var(--cols) / var(--rows)));
+}
 
 .tile {
   position: relative;
@@ -246,7 +265,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   padding: 12px;
   color: var(--accent-ink);
   background:
-    repeating-linear-gradient(135deg, transparent 0 13px, rgba(0, 0, 0, 0.14) 13px 14.5px),
+    repeating-linear-gradient(135deg, transparent 0 13px, var(--hatch) 13px 14.5px),
     var(--accent);
   clip-path: inset(100% 0 0 0);
   transition: clip-path 0.45s var(--ease);
@@ -292,6 +311,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   inset: 0;
   z-index: 30;
   background: var(--bg);
+  color: var(--fg);
   overflow-y: auto;
   overscroll-behavior: contain;
   clip-path: inset(100% 0 0 0);
@@ -308,12 +328,12 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   border-bottom: 1.5px solid var(--line);
 }
 .ov__bar .ov__actions { display: flex; gap: 22px; }
-.ov__head {
-  display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap;
-  padding: 40px var(--gutter) 28px;
+.ov__grid {
+  min-height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 80px var(--gutter);
 }
-.ov__head .sec__blurb { margin: 0; }
-.ov__body { padding: 0 var(--gutter) 80px; }
 
 .post {
   display: grid;
@@ -343,10 +363,9 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 
 /* ---------- Footer ---------- */
 
-.footer { display: flex; flex-direction: column; justify-content: space-between; gap: 28px; border-bottom: 0; }
+.footer { min-height: 0; display: flex; flex-direction: column; gap: 56px; scroll-snap-align: end; }
 .footer__cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
 .footer__links { display: grid; gap: 4px; justify-items: start; }
-.footer__big { cursor: pointer; }
 .footer__bottom { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
 .clock { font-variant-numeric: tabular-nums; }
 
@@ -367,6 +386,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   transition: transform 0.3s var(--spring);
+  mix-blend-mode: difference; /* flips with the screen behind it, like the nav */
 }
 .agent-fab:hover { transform: rotate(-3deg) scale(1.06); }
 .agent-fab .dot, .agent__status .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; animation: pulse 1.8s infinite; }
@@ -462,7 +482,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   .nav { grid-template-columns: 1fr auto; }
   .nav__counter, .nav .js-agent-open { display: none; }
   .agent-fab { padding: 10px 14px 9px; }
-  .grid--full { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .grid--full { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; width: 100%; }
 }
 
 /* No hover on touch: show titles under tiles in the expanded view */
