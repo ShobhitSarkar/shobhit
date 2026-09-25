@@ -80,8 +80,8 @@
     return art(item.slug, i);
   }
 
-  // Work entries describe their roles; the tile shows the latest one.
-  const metaOf = (item) => (item.roles ? `${item.roles[0].title} · ${item.roles[0].dates}` : item.meta);
+  // Work tiles show the latest role's title; dates stay on the company page.
+  const metaOf = (item) => (item.roles ? item.roles[0].title : item.meta);
 
   // "## " lines become subheadings, runs of "- " lines become a bullet list, everything else a paragraph.
   const paragraphs = (list = [], lede = false) =>
@@ -101,7 +101,7 @@
     return `<span class="tile__hover">
         ${metaOf(item) ? `<span class="tile__meta">${esc(metaOf(item))}</span>` : ""}
         <span class="tile__title">${esc(item.title)}</span>
-        ${section === "inspo" ? "" : `<span class="tile__line">${esc(item.line)}</span>`}
+        ${section === "inspo" || section === "work" ? "" : `<span class="tile__line">${esc(item.line)}</span>`}
         ${synopsis}
       </span>`;
   }
@@ -203,7 +203,7 @@
     const prev = list[idx - 1];
     const next = list[idx + 1];
     const roles = (it.roles || [])
-      .map((r) => `<section class="role"><h3>${esc(r.title)}</h3><div class="role__dates label muted">${esc(r.dates)}</div>${paragraphs(r.body)}</section>`)
+      .map((r) => `<section class="role"><h3>${esc(r.title)}</h3>${r.dates ? `<div class="role__dates label muted">${esc(r.dates)}</div>` : ""}${paragraphs(r.body)}</section>`)
       .join("");
     const body = paragraphs(it.body, true) + (roles ? `<div class="roles">${roles}</div>` : "");
     const meta = [s.title, it.meta, sectionId === "inspo" ? "Synopsis" : ""].filter(Boolean).map((m) => `<span>${esc(m)}</span>`).join("");

@@ -55,7 +55,7 @@ window.SITE = {
     },
     {
       slug: "collins-aerospace", title: "Collins Aerospace", logo: "logos/collins-aerospace.svg",
-      line: "Sentiment models and AI tooling, summer 2023.",
+      line: "Sentiment models and AI tooling.",
       roles: [
         {
           title: "AI Interactions Intern", dates: "May — Aug 2023",
@@ -63,6 +63,21 @@ window.SITE = {
             "- Deployed a BERT-based sentiment analysis model with a 91% F1 score, contributing to an enterprise LLM",
             "- Architected a PyGame-based manual override system for an autonomous buggy prototype",
             "- Built the UI for an AI resources dashboard used by 4 teams, centralising company-wide AI initiatives and training",
+          ],
+        },
+      ],
+    },
+    {
+      slug: "kingland-systems", title: "Kingland Systems", logo: "logos/kingland-systems.svg",
+      line: "Research and data quality for banking and capital-markets clients.",
+      roles: [
+        {
+          title: "Data Research Analyst Intern", dates: "Dec 2021 — Mar 2023",
+          body: [ // TODO: check this matches what you actually did
+            "- Researched corporations and investment vehicles for large banking and capital-markets clients, identifying how they relate and turning that into validated data",
+            "- Cleaned up new and existing records to keep improving data quality over time",
+            "- Worked to the Operational Data Outsourcing team's data-quality and production standards",
+            "- Helped on projects to improve automation, efficiency and training",
           ],
         },
       ],
@@ -87,11 +102,6 @@ window.SITE = {
           ],
         },
       ],
-    },
-    {
-      slug: "kingland-systems", title: "Kingland Systems", logo: "logos/kingland-systems.svg",
-      line: "TODO — one line on your work here.",
-      roles: [{ title: "Role", dates: "Dates", body: ["TODO — the team, what you owned, what you shipped."] }], // TODO: not on the resume
     },
   ],
 
