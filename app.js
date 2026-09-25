@@ -35,11 +35,12 @@
     `<a class="${cls} js-email" href="mailto:${esc(S.email)}" data-cursor="SAY HI">${esc(label)}</a>`;
 
   // Deterministic little black & white compositions for tiles without images.
-  function art(seed) {
+  // The tile index picks the composition, so neighbouring tiles never repeat one; the seed varies the details.
+  function art(seed, index) {
     let h = 2166136261;
     for (const c of seed) h = Math.imul(h ^ c.charCodeAt(0), 16777619);
     const rnd = () => ((h = Math.imul(h ^ (h >>> 15), 2246822507) ^ Math.imul(h ^ (h >>> 13), 3266489909)) >>> 0) / 4294967296;
-    const k = Math.floor(rnd() * 5);
+    const k = index % 5;
     const W = "currentColor";
     let g = "";
     if (k === 0) {
@@ -76,14 +77,21 @@
     }
     if (item.image) return `<img src="${esc(item.image)}" alt="" loading="lazy">`;
     if (section === "writes") return `<span class="tile__n">${pad(i + 1)}</span><span class="tile__peek">${esc(item.title)}</span>`;
-    return art(item.slug);
+    return art(item.slug, i);
   }
 
   // Work entries describe their roles; the tile shows the latest one.
   const metaOf = (item) => (item.roles ? `${item.roles[0].title} · ${item.roles[0].dates}` : item.meta);
 
+  // "## " lines become subheadings, runs of "- " lines become a bullet list, everything else a paragraph.
   const paragraphs = (list = [], lede = false) =>
-    list.map((p, j) => (p.startsWith("## ") ? `<h3>${esc(p.slice(3))}</h3>` : `<p${lede && j === 0 ? ' class="post__lede"' : ""}>${esc(p)}</p>`)).join("");
+    list
+      .map((p, j) =>
+        p.startsWith("## ") ? `<h3>${esc(p.slice(3))}</h3>`
+        : p.startsWith("- ") ? `<li>${esc(p.slice(2))}</li>`
+        : `<p${lede && j === 0 ? ' class="post__lede"' : ""}>${esc(p)}</p>`)
+      .join("")
+      .replace(/(?:<li>.*?<\/li>)+/g, (items) => `<ul>${items}</ul>`);
 
   function tileHover(section, item) {
     if (section === "inspo" && item.kind !== "book") {

@@ -8,7 +8,7 @@
 //   logo   – (work only) logo file (SVG or transparent PNG). Only its shape is used, drawn in the screen's colour,
 //            so any logo turns black or white to match. Without one the name is set as a wordmark.
 //   kind   – (inspo only) "image" | "book"
-//   body   – array of paragraphs; a string starting with "## " becomes a subheading
+//   body   – array of paragraphs; a string starting with "## " becomes a subheading, "- " a bullet point
 //   roles  – (work only) one entry per role at that company, newest first: { title, dates, body }.
 //            The tile shows the latest role; the company page lists them all as a timeline.
 window.SITE = {
@@ -31,29 +31,67 @@ window.SITE = {
   work: [
     {
       slug: "john-deere", title: "John Deere", logo: "logos/john-deere.svg",
-      line: "TODO — one line on your work here.",
+      line: "Agents and MCP Apps for John Deere's dealer network.",
       roles: [
-        { title: "AI Engineer", dates: "2025 — now", body: ["TODO — what you own, what you've shipped, what changed because you were there."] }, // TODO: exact dates
-        { title: "Student Employee (part-time)", dates: "2023 — 2025", body: ["TODO — what you worked on while studying, and what led to the full-time role."] }, // TODO: exact dates
+        {
+          title: "AI Software Engineer", dates: "Jun 2025 — now",
+          body: [
+            "- Architected the org-wide rollout of MCP Apps, bringing in-chat UI to 30K+ queries a month",
+            "- Cut agent response latency by 32% across 1.6M queries a year by optimising database logic",
+            "- Engineered a virtual file system that enables agentic search and skill sharing for dealerships",
+            "- Built an MCP App server with AI-powered parts search, handling 2.4K queries a week",
+            "- Built an analytics pipeline so business and engineering stakeholders can track KPIs",
+          ],
+        },
+        {
+          title: "Student Software Engineer", dates: "Nov 2023 — May 2025",
+          body: [
+            "- Enabled async releases for 10+ teams with Module Federation, decoupling 40+ micro-frontends",
+            "- Modernised 30+ UI components to match the Deere design system, improving UX and DX",
+            "- Automated 40+ repositories with Husky, CI/CD improvements and versioning for semantic deploys",
+          ],
+        },
       ],
     },
     {
       slug: "collins-aerospace", title: "Collins Aerospace", logo: "logos/collins-aerospace.svg",
-      line: "TODO — one line on your work here.",
-      roles: [{ title: "Role", dates: "Dates", body: ["TODO — the team, what you owned, what you shipped."] }], // TODO
+      line: "Sentiment models and AI tooling, summer 2023.",
+      roles: [
+        {
+          title: "AI Interactions Intern", dates: "May — Aug 2023",
+          body: [
+            "- Deployed a BERT-based sentiment analysis model with a 91% F1 score, contributing to an enterprise LLM",
+            "- Architected a PyGame-based manual override system for an autonomous buggy prototype",
+            "- Built the UI for an AI resources dashboard used by 4 teams, centralising company-wide AI initiatives and training",
+          ],
+        },
+      ],
+    },
+    {
+      slug: "iowa-state-university", title: "Iowa State University", logo: "logos/iowa-state.svg",
+      line: "Undergraduate research in computer vision and GPU computing.",
+      body: ["Where I studied: B.S. in Computer Science with a Data Science minor, 2025."],
+      roles: [
+        {
+          title: "Undergraduate Research Assistant", dates: "Sep — Dec 2022",
+          body: [
+            "- Improved YOLOv4 defect-detection accuracy by 15% by labelling images and optimising the train/test/validation split",
+            "- Trained the model to detect dents and cracks, improving production quality control",
+          ],
+        },
+        {
+          title: "Undergraduate Research Assistant", dates: "Jan — May 2022",
+          body: [
+            "- Evaluated PyTorch and QuTiP efficiency for matrix operations in 8–12 bonding-site systems",
+            "- Benchmarked CUDA performance, showing QuTiP's strength on sparse matrices and PyTorch's on dense ones",
+          ],
+        },
+      ],
     },
     {
       slug: "kingland-systems", title: "Kingland Systems", logo: "logos/kingland-systems.svg",
       line: "TODO — one line on your work here.",
-      roles: [{ title: "Role", dates: "Dates", body: ["TODO — the team, what you owned, what you shipped."] }], // TODO
-    },
-    {
-      slug: "iowa-state-university", title: "Iowa State University", logo: "logos/iowa-state.svg",
-      line: "TODO — one line on your work here.",
-      roles: [ // TODO: both Iowa State roles, newest first
-        { title: "Role", dates: "Dates", body: ["TODO"] },
-        { title: "Role", dates: "Dates", body: ["TODO"] },
-      ],
+      roles: [{ title: "Role", dates: "Dates", body: ["TODO — the team, what you owned, what you shipped."] }], // TODO: not on the resume
     },
   ],
 
@@ -101,12 +139,36 @@ window.SITE = {
   ],
 
   projects: [
-    { slug: "this-site", title: "This site", meta: "2026", line: "Big letters, small grids, a few somersaults.",
-      body: ["Hand-sketched, then built with plain HTML, CSS and JS. No framework, no build step.", "## Why", "Because a portfolio should feel like a place, not a résumé."] },
-    { slug: "project-two", title: "Project Two", meta: "2025", line: "SAMPLE — an agent that does one boring thing very well.", body: ["SAMPLE — what it is, why it exists, how it works, link to the repo."] },
-    { slug: "project-three", title: "Project Three", meta: "2025", line: "SAMPLE — an eval harness for flaky prompts.", body: ["SAMPLE — replace me."] },
-    { slug: "project-four", title: "Project Four", meta: "2024", line: "SAMPLE — a CLI you'll use once and love.", body: ["SAMPLE — replace me."] },
-    { slug: "project-five", title: "Project Five", meta: "2024", line: "SAMPLE — a weekend hack that got out of hand.", body: ["SAMPLE — replace me."] },
-    { slug: "project-six", title: "Project Six", meta: "2023", line: "SAMPLE — fine-tuning a tiny model on a tiny budget.", body: ["SAMPLE — replace me."] },
+    {
+      slug: "iowa-state-semantic-library", title: "Iowa State Semantic Library", meta: "RAG app",
+      line: "Ask questions across the CS department's research papers.",
+      body: [
+        "A retrieval-augmented generation (RAG) app over the Iowa State CS department's academic papers and research.",
+        "## Built with",
+        "OpenAI, Docker, Google Cloud Run, Qdrant, Next.js and Tailwind CSS.",
+      ],
+    },
+    {
+      slug: "paintbots", title: "Paintbots", meta: "C++",
+      line: "A C++ game engine built on classic design patterns.",
+      body: [
+        "A game engine written in C++, built around the Singleton, Strategy, Observer and Factory patterns.",
+        "## Built with",
+        "C++, object-oriented design and smart pointers.",
+      ],
+    },
+    {
+      slug: "terraflow", title: "TerraFlow", meta: "C",
+      line: "A watershed simulation over 1M+ LIDAR points.",
+      body: [
+        "A watershed simulation system written in C that processes more than a million LIDAR points.",
+        "## Built with",
+        "C, low-level programming and cellular automata modelling.",
+      ],
+    },
+    {
+      slug: "this-site", title: "This site", meta: "HTML · CSS · JS", line: "Big letters, small grids, a few somersaults.",
+      body: ["Hand-sketched, then built with plain HTML, CSS and JS. No framework, no build step.", "## Why", "Because a portfolio should feel like a place, not a résumé."],
+    },
   ],
 };
