@@ -117,7 +117,7 @@
           <div class="hero__rule"></div>
           <div class="hero__cols label">
             <ul class="hero__index">${index}</ul>
-            <div class="stack"><b>Say hi</b>${emailLink(S.email, "u-link")}</div>
+            <div class="hero__reach">${emailLink(S.email)}<span class="clock label" aria-label="Local time">--:--:--</span></div>
           </div>
         </div>
         <button class="cue js-jump" data-to="s-${SECTIONS[0].id}" data-cursor="GO">${esc(SECTIONS[0].title)} <span class="cue__arrow">↓</span></button>
@@ -157,10 +157,7 @@
     $("#app").innerHTML = `
       <header class="nav label">
         <a href="#" class="nav__name js-jump" data-to="s-home" aria-label="${esc(S.name)}, back to top">${esc(initials)}</a>
-        <nav class="nav__right">
-          ${emailLink(S.email)}
-          <span class="clock" aria-label="Local time">--:--:--</span>
-        </nav>
+        <nav class="nav__right">${emailLink("Reach out!")}</nav>
       </header>
       <main>${hero}${secs}${footer}</main>
       <div class="overlay" id="overlay" hidden></div>
