@@ -13,7 +13,10 @@ window.SITE = {
   role: "AI Engineer",
   email: "hello@example.com", // TODO: your real address
   intro: "AI engineer. I build things that think a little, write about what I learn, and collect what inspires me.",
-  location: { label: "Where I am", city: "City, Country", timezone: "America/Chicago" }, // TODO
+  locations: [
+    { label: "Now", city: "Davenport, IA", timezone: "America/Chicago" },
+    { label: "Grew up", city: "Bangalore, IN", timezone: "Asia/Kolkata" },
+  ],
   links: [
     { label: "GitHub", href: "https://github.com/ShobhitSarkar" },
     { label: "LinkedIn", href: "#" }, // TODO

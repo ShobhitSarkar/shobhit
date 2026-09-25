@@ -18,14 +18,20 @@
 
   // ---------- Small render helpers ----------
 
-  // Big display word split into letters so each can rise in and boing on hover.
-  const letters = (text) =>
-    `<span class="clip">${[...text.toUpperCase()]
-      .map((c, i) => (c === " " ? " " : `<span class="ch" style="--i:${i}">${esc(c)}</span>`))
-      .join("")}</span>`;
+  // Big display word split into letters so each can rise in, boing or somersault on hover.
+  // A "\n" stacks the text onto separate lines.
+  const letters = (text) => {
+    let i = 0;
+    return text.toUpperCase().split("\n").map((line) =>
+      `<span class="clip">${[...line].map((c) => (c === " " ? " " : `<span class="ch" style="--i:${i++}">${esc(c)}</span>`)).join("")}</span>`
+    ).join("<br>");
+  };
 
-  const fitTitle = (text, cls = "", max = "") =>
-    `<h2 class="display fit ${cls}" ${max ? `data-max="${max}"` : ""} aria-label="${esc(text)}"><span class="fit__inner" aria-hidden="true">${letters(text)}</span></h2>`;
+  const fitTitle = (text, cls = "", max = "", tag = "h2") =>
+    `<${tag} class="display fit ${cls}" ${max ? `data-max="${max}"` : ""} aria-label="${esc(text.replace(/\n/g, " "))}"><span class="fit__inner" aria-hidden="true">${letters(text)}</span></${tag}>`;
+
+  const place = (l) =>
+    `<div class="stack"><b>${esc(l.label)}</b><span>${esc(l.city)}</span><span class="clock" data-tz="${esc(l.timezone)}">--:--</span></div>`;
 
   const emailLink = (label = "Email", cls = "u-link label") =>
     `<a class="${cls} js-email" href="mailto:${esc(S.email)}" data-cursor="SAY HI">${esc(label)}</a>`;
@@ -105,15 +111,19 @@
   function renderHome() {
     const index = SECTIONS.map((s, i) => `<li><a href="#" class="js-jump" data-to="s-${s.id}"><span>${pad(i + 1)}</span>${esc(s.title)}</a></li>`).join("");
     const hero = `
-      <section class="screen hero" id="s-home" data-name="Index">
-        ${fitTitle(S.name, "hero__name")}
-        <div class="hero__rule"></div>
-        <div class="hero__cols">
+      <section class="screen sec hero" id="s-home" data-name="Index">
+        <div class="sec__num label">${esc(S.role)}</div>
+        <div class="sec__titlewrap">${fitTitle(S.name.replace(" ", "\n"), "", "", "h1")}</div>
+        <div class="hero__side">
           <p class="hero__intro">${esc(S.intro)}</p>
-          <ul class="hero__index label">${index}</ul>
-          <div class="stack label"><b>${esc(S.location.label)}</b><span>${esc(S.location.city)}</span><span class="clock" data-tz="${esc(S.location.timezone)}">--:--</span></div>
-          <div class="stack label"><b>Say hi</b>${emailLink(S.email, "u-link")}<button class="u-link js-agent-open" style="justify-self:start" data-cursor="CHAT">Talk to my agent</button></div>
+          <div class="hero__rule"></div>
+          <div class="hero__cols label">
+            <ul class="hero__index">${index}</ul>
+            <div class="stack"><b>Say hi</b>${emailLink(S.email, "u-link")}<button class="u-link js-agent-open" style="justify-self:start" data-cursor="CHAT">Talk to my agent</button></div>
+            ${S.locations.map(place).join("")}
+          </div>
         </div>
+        <button class="cue js-jump" data-to="s-${SECTIONS[0].id}" data-cursor="GO">${esc(SECTIONS[0].title)} <span class="cue__arrow">↓</span></button>
       </section>`;
 
     const secs = SECTIONS.map((s, i) => {
@@ -137,8 +147,7 @@
     const footer = `
       <footer class="screen footer${SECTIONS.length % 2 ? "" : " is-inverse"}" id="s-contact" data-name="Contact">
         <div class="footer__cols label">
-          <div class="stack"><b>${esc(S.location.label)}</b><span>${esc(S.location.city)}</span><span class="clock" data-tz="${esc(S.location.timezone)}">--:--</span></div>
-          <div class="stack"><b>You</b><span>Wherever you are</span><span class="clock">--:--</span></div>
+          ${S.locations.map(place).join("")}
           <div class="footer__links"><b>Quick links</b>${SECTIONS.map((s) => `<a href="#" class="u-link js-jump" data-to="s-${s.id}">${esc(s.title)}</a>`).join("")}</div>
           <div class="footer__links"><b>Elsewhere</b>${S.links.map((l) => `<a class="u-link" href="${esc(l.href)}" target="_blank" rel="noopener">${esc(l.label)}</a>`).join("")}${emailLink("Email", "u-link")}</div>
         </div>
@@ -290,7 +299,11 @@
     const io = new IntersectionObserver((entries) => {
       for (const e of entries) {
         if (!e.isIntersecting) continue;
-        e.target.classList.add("is-in");
+        if (!e.target.classList.contains("is-in")) {
+          e.target.classList.add("is-in");
+          // Once the letters have risen in, let them leave their clip box so they can jump around.
+          setTimeout(() => e.target.classList.add("is-settled"), reducedMotion ? 0 : 1500);
+        }
         const i = $$(".screen").indexOf(e.target);
         const name = e.target.dataset.name;
         if (counter) counter.textContent = i === 0 ? "00 / Index" : i > SECTIONS.length ? "Contact" : `${pad(i)} / ${name}`;
@@ -351,13 +364,19 @@
       if (tl && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openTile(tl); }
     });
 
-    // Letters boing when you touch them.
+    // Letters boing when you touch them, and now and then one does a somersault. Clicking one always flips it.
+    const play = (ch, move) => {
+      if (ch.classList.contains("boing") || ch.classList.contains("flip")) return;
+      ch.classList.add(move);
+      ch.addEventListener("animationend", () => ch.classList.remove(move), { once: true });
+    };
     document.addEventListener("pointerover", (e) => {
       const ch = e.target.closest?.(".ch");
-      if (ch && !ch.classList.contains("boing")) {
-        ch.classList.add("boing");
-        ch.addEventListener("animationend", () => ch.classList.remove("boing"), { once: true });
-      }
+      if (ch) play(ch, Math.random() < 0.3 ? "flip" : "boing");
+    });
+    document.addEventListener("pointerdown", (e) => {
+      const ch = e.target.closest?.(".ch");
+      if (ch) play(ch, "flip");
     });
 
     addEventListener("popstate", () => { current = location.hash; route(); });
@@ -453,6 +472,7 @@
     [/(project|built|build|side|github|code)/i, () => `A few things Shobhit built:\n${listOf("projects")}\n\n<a href="#/projects" class="js-route">All projects →</a>`],
     [/(blog|write|writing|post|article|essay)/i, () => `Latest writing:\n${listOf("blog")}`],
     [/(read|book|inspo|inspir|favou?rite)/i, () => `On the shelf:\n${items("inspo").filter((i) => i.kind === "book").slice(0, 3).map((b) => `• <a href="#/inspo/${esc(b.slug)}" class="js-route">${esc(b.title)}</a>`).join("\n")}`],
+    [/(where|live|based|located|from|bangalore|bengaluru|davenport)/i, () => `Shobhit lives in ${esc(S.locations[0].city)} and grew up in ${esc(S.locations[1].city)}, and goes back at least once a year.`],
     [/(ai|llm|agent|model|ml|machine learning|stack|skills?)/i, () => "Agents, evals, retrieval, and getting models to behave in production. The blog has the long version."],
     [/(who are you|are you (real|human|ai)|what are you)/i, () => "I'm a few dozen lines of JavaScript with ambitions. The real Shobhit is one email away."],
     [/(joke|funny|lol)/i, () => "Why did the LLM cross the road? It was 94% confident there was a road."],
