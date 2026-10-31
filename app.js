@@ -113,8 +113,10 @@
       .replace(/(?:<li>.*?<\/li>)+/g, (items) => `<ul>${items}</ul>`);
 
   function tileHover(section, item) {
-    if (section === "inspo" && item.kind !== "book") {
-      return `<span class="tile__hover"><span class="tile__line">${esc(item.line)}</span></span>`;
+    // Pictures just get their colour back on hover; songs also say what they are and where they go.
+    if (section === "inspo" && item.kind === "image") return "";
+    if (section === "inspo" && item.kind === "music") {
+      return `<span class="tile__hover"><span class="tile__line">${esc(item.line)}${item.href ? " ↗" : ""}</span></span>`;
     }
     const synopsis = section === "inspo" ? `<button class="btn js-synopsis" data-slug="${esc(item.slug)}" data-cursor="READ">Synopsis</button>` : "";
     return `<span class="tile__hover">
@@ -127,10 +129,11 @@
 
   function tile(section, item, i, solo = false) {
     const kind = section === "inspo" ? (item.kind === "book" ? "book" : "image") : section === "projects" ? "project" : section;
-    // Pictures don't open anywhere; everything else opens a post-style page.
+    // Pictures don't open anywhere, songs open their link, everything else opens a post-style page.
     const opens = !(section === "inspo" && item.kind !== "book");
-    return `<div class="tile tile--${kind}" role="button" tabindex="0" style="--i:${i}"
-        data-section="${section}" data-slug="${esc(item.slug)}" data-opens="${opens}" data-cursor=""
+    const href = section === "inspo" && item.kind === "music" && item.href ? ` data-href="${esc(item.href)}"` : "";
+    return `<div class="tile tile--${kind}" role="${href ? "link" : "button"}" tabindex="0" style="--i:${i}"
+        data-section="${section}" data-slug="${esc(item.slug)}" data-opens="${opens}"${href} data-cursor="${href ? "PLAY" : ""}"
         aria-label="${esc(item.title)}${item.line ? " — " + esc(item.line) : ""}">
         <span class="tile__face">${tileFace(section, item, i, solo)}</span>
         ${tileHover(section, item)}
@@ -362,7 +365,8 @@
   }
 
   function openTile(t) {
-    const { section, slug } = t.dataset;
+    const { section, slug, href } = t.dataset;
+    if (href) return window.open(href, "_blank", "noopener"); // songs → Apple Music
     if (t.closest(".grid--solo") && t.dataset.opens === "true") return navigate(`#/${section}/${slug}`); // lone tile → straight to it
     if (!t.closest(".grid--full")) return navigate("#/" + section); // compact grid → expanded grid
     if (t.dataset.opens === "true") navigate(`#/${section}/${slug}`); // expanded → post
@@ -376,7 +380,13 @@
       const email = t.closest(".js-email");
       if (email) { e.preventDefault(); return copyEmail(); }
       const jump = t.closest(".js-jump");
-      if (jump) { e.preventDefault(); return document.getElementById(jump.dataset.to)?.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth" }); }
+      if (jump) {
+        e.preventDefault();
+        const to = document.getElementById(jump.dataset.to);
+        // From a post or an expanded grid (e.g. the SS in the header), close it and land on the target, not where you came from.
+        if (parseRoute()) { lastSection = null; navigate(""); return to?.scrollIntoView({ behavior: "instant" }); }
+        return to?.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth" });
+      }
       const r = t.closest(".js-route");
       if (r) { e.preventDefault(); return navigate(r.getAttribute("href")); }
       if (t.closest(".js-close") || t.classList.contains("js-backdrop")) { e.preventDefault(); return closeOverlay(); }
