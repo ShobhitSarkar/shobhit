@@ -368,7 +368,12 @@
   // Tiles always open the thing itself; the full grid lives behind "All N →" and the "← All …" links.
   function openTile(t) {
     const { section, slug, href } = t.dataset;
-    if (href) return window.open(href, "_blank", "noopener"); // songs → Apple Music
+    if (href) {
+      // Songs → Apple Music. Desktops get a new tab. Phones stay in this tab: a new tab there is left blank
+      // while the Music app takes over, and that blank tab is what you come back to.
+      if (finePointer) return window.open(href, "_blank", "noopener");
+      return location.assign(href);
+    }
     if (t.dataset.opens === "true") return navigate(`#/${section}/${slug}`); // everything else opens its own page…
     const img = t.querySelector("img"); // …except pictures, which open large and in colour
     if (img) openLightbox(img, t);
