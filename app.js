@@ -185,7 +185,6 @@
         </div>
         <div class="footer__bottom label muted">
           <span>© ${new Date().getFullYear()} ${esc(S.name)}</span>
-          <span>Drawn by hand, built by hand.</span>
           <a href="#" class="u-link js-jump" data-to="s-home">Back to top ↑</a>
         </div>
       </footer>`;
