@@ -191,6 +191,17 @@ window.SITE = {
 
   projects: [
     {
+      slug: "splitaroo", title: "Splitaroo", meta: "Mobile app",
+      line: "Snap a photo of any receipt and split it with friends.",
+      body: [
+        "Snap a photo of any receipt and instantly split expenses with friends — no more mental math or awkward Venmo negotiations.",
+        "## Built with",
+        "Python, FastAPI, LLMs and computer vision.",
+        "## Status",
+        "Active. Not released publicly yet.",
+      ],
+    },
+    {
       slug: "iowa-state-semantic-library", title: "Iowa State Semantic Library", meta: "RAG app",
       line: "Ask questions across the CS department's research papers.",
       body: [
