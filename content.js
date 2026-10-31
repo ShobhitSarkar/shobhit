@@ -217,9 +217,5 @@ window.SITE = {
         "C, low-level programming and cellular automata modelling.",
       ],
     },
-    {
-      slug: "this-site", title: "This site", meta: "HTML · CSS · JS", line: "Big letters, small grids, a few somersaults.",
-      body: ["Hand-sketched, then built with plain HTML, CSS and JS. No framework, no build step.", "## Why", "Because a portfolio should feel like a place, not a résumé."],
-    },
   ],
 };
