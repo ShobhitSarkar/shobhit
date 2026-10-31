@@ -206,7 +206,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
   gap: clamp(8px, 1vw, 14px);
 }
 .grid--full {
@@ -254,6 +254,14 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 }
 .tile__n { position: absolute; top: 8px; left: 10px; font-size: 11px; font-weight: 600; font-variant-numeric: tabular-nums; }
 .grid:not(.grid--full) .tile__peek { display: none; }
+/* A lone tile: its text sits on the face, set big */
+.tile__face:has(.tile__solo) { place-items: stretch; padding: 5cqi; }
+.tile__solo { align-self: end; display: flex; flex-direction: column; align-items: flex-start; gap: 3cqi; }
+.grid--solo .tile__n { top: 4.5cqi; left: 5cqi; font-size: max(11px, 2.4cqi); }
+.grid--solo .tile__meta { font-size: max(11px, 2.4cqi); }
+.grid--solo .tile__title { font-size: 8.5cqi; text-wrap: balance; }
+.grid--solo .tile__line { font-size: max(13px, 3cqi); -webkit-line-clamp: 4; line-clamp: 4; max-width: 30ch; }
+.grid--solo .tile__hover { padding: 5cqi; gap: 3cqi; }
 .tile__peek { position: absolute; left: 10px; right: 10px; bottom: 10px; font-weight: 800; font-stretch: 125%; text-transform: uppercase; font-size: 13px; line-height: 1; }
 /* Logos are used as a mask, so whatever colours the file has, it's drawn in the screen's text colour */
 .tile__logo {
@@ -376,8 +384,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   top: 120px;
   align-self: start;
   font-size: clamp(44px, 7.4vw, 132px);
-  overflow-wrap: anywhere;
-  hyphens: auto;
+  /* Lines break between words only; app.js shrinks the type when a word is too wide for the column */
+  overflow-wrap: normal;
 }
 .post__meta { display: flex; flex-wrap: wrap; gap: 8px 22px; padding-bottom: 18px; margin-bottom: 26px; border-bottom: 1.5px solid var(--line); }
 .post__body { max-width: 62ch; font-size: clamp(16px, 1.25vw, 19px); line-height: 1.6; }
@@ -452,7 +460,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
     grid-template-areas: "num" "title" "grid" "cue";
     align-content: space-between;
   }
-  .post { grid-template-columns: 1fr; }
+  .post { grid-template-columns: minmax(0, 1fr); }
   .post__heading { position: static; }
   .footer__cols { grid-template-columns: 1fr 1fr; }
   .grid--full { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; width: 100%; }
