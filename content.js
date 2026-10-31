@@ -191,6 +191,17 @@ window.SITE = {
 
   projects: [
     {
+      slug: "splitaroo", title: "Splitaroo", meta: "Mobile app",
+      line: "Snap a photo of any receipt and split it with friends.",
+      body: [
+        "Snap a photo of any receipt and instantly split expenses with friends — no more mental math or awkward Venmo negotiations.",
+        "## Built with",
+        "Python, FastAPI, LLMs and computer vision.",
+        "## Status",
+        "Active. Not released publicly yet.",
+      ],
+    },
+    {
       slug: "iowa-state-semantic-library", title: "Iowa State Semantic Library", meta: "RAG app",
       line: "Ask questions across the CS department's research papers.",
       body: [
@@ -216,10 +227,6 @@ window.SITE = {
         "## Built with",
         "C, low-level programming and cellular automata modelling.",
       ],
-    },
-    {
-      slug: "this-site", title: "This site", meta: "HTML · CSS · JS", line: "Big letters, small grids, a few somersaults.",
-      body: ["Hand-sketched, then built with plain HTML, CSS and JS. No framework, no build step.", "## Why", "Because a portfolio should feel like a place, not a résumé."],
     },
   ],
 };
