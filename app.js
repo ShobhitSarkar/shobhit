@@ -75,8 +75,8 @@
   }
 
   // A lone tile fills the whole square, so posts and projects have room to show their text without a hover.
-  const soloText = (section, item) => `
-      <span class="tile__n">${pad(1)}</span>
+  const soloText = (section, item, i) => `
+      <span class="tile__n">${pad(i + 1)}</span>
       <span class="tile__solo">
         ${item.meta ? `<span class="tile__meta">${esc(item.meta)}</span>` : ""}
         <span class="tile__title">${esc(item.title)}</span>
@@ -85,7 +85,7 @@
       </span>`;
 
   function tileFace(section, item, i, solo) {
-    if (solo && (section === "writes" || section === "projects")) return soloText(section, item);
+    if (solo && (section === "writes" || section === "projects")) return soloText(section, item, i);
     if (section === "work") {
       return item.logo
         ? `<span class="tile__logo" style="--logo: url('${esc(item.logo)}')"></span>`
@@ -169,6 +169,7 @@
             ${fitTitle(s.title, "", "34vh")}
           </div>
           <div class="sec__grid">
+            ${list.length > cols * cols ? `<a href="#/${s.id}" class="sec__all label u-link js-route" data-cursor="ALL">All ${list.length} →</a>` : ""}
             <div class="grid${cols === 1 ? " grid--solo" : ""}" style="--cols:${cols}">${list.slice(0, cols * cols).map((it, j) => tile(s.id, it, j, cols === 1)).join("")}</div>
           </div>
           <button class="cue js-jump" data-to="${next ? "s-" + next.id : "s-contact"}" data-cursor="GO">
@@ -197,7 +198,8 @@
       <main>${hero}${secs}${footer}</main>
       <div class="overlay" id="overlay" hidden></div>
       <div class="toast" id="toast" role="status"></div>
-      <div class="cursor" id="cursor"><span></span></div>`;
+      <div class="cursor" id="cursor"><span></span></div>
+      <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Picture" tabindex="-1" data-cursor="CLOSE" hidden><img alt=""></div>`;
   }
 
   // ---------- Overlay routes: #/section (expanded grid) and #/section/slug (post) ----------
@@ -211,7 +213,7 @@
     const rows = Math.ceil(list.length / cols);
     return `
       <div class="ov__grid js-backdrop" data-cursor="CLOSE" aria-label="${esc(sectionById(sectionId).title)}">
-        <div class="grid grid--full" style="--cols:${cols}; --rows:${rows}">${list.map((it, j) => tile(sectionId, it, j, true)).join("")}</div>
+        <div class="grid grid--full" style="--cols:${cols}; --rows:${rows}">${list.map((it, j) => tile(sectionId, it, j)).join("")}</div>
       </div>`;
   }
 
@@ -363,12 +365,31 @@
     }
   }
 
+  // Tiles always open the thing itself; the full grid lives behind "All N →" and the "← All …" links.
   function openTile(t) {
     const { section, slug, href } = t.dataset;
     if (href) return window.open(href, "_blank", "noopener"); // songs → Apple Music
-    if (t.closest(".grid--solo") && t.dataset.opens === "true") return navigate(`#/${section}/${slug}`); // lone tile → straight to it
-    if (!t.closest(".grid--full")) return navigate("#/" + section); // compact grid → expanded grid
-    if (t.dataset.opens === "true") navigate(`#/${section}/${slug}`); // expanded → post
+    if (t.dataset.opens === "true") return navigate(`#/${section}/${slug}`); // everything else opens its own page…
+    const img = t.querySelector("img"); // …except pictures, which open large and in colour
+    if (img) openLightbox(img, t);
+  }
+
+  let lightboxFrom = null; // the tile to hand focus back to
+  function openLightbox(img, from) {
+    const lb = $("#lightbox");
+    $("img", lb).src = img.currentSrc || img.src;
+    lightboxFrom = from;
+    lb.hidden = false;
+    document.body.classList.add("is-locked");
+    lb.focus();
+  }
+  function closeLightbox() {
+    const lb = $("#lightbox");
+    if (lb.hidden) return false;
+    lb.hidden = true;
+    if (!parseRoute()) document.body.classList.remove("is-locked");
+    lightboxFrom?.focus();
+    return true;
   }
 
   function bindEvents() {
@@ -389,12 +410,13 @@
       const r = t.closest(".js-route");
       if (r) { e.preventDefault(); return navigate(r.getAttribute("href")); }
       if (t.closest(".js-close") || t.classList.contains("js-backdrop")) { e.preventDefault(); return closeOverlay(); }
+      if (t.closest("#lightbox")) { e.preventDefault(); return closeLightbox(); }
       const tl = t.closest(".tile");
       if (tl) return openTile(tl);
     });
 
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") return closeOverlay();
+      if (e.key === "Escape") return closeLightbox() || closeOverlay();
       const tl = e.target.closest?.(".tile");
       if (tl && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openTile(tl); }
     });

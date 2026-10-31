@@ -178,7 +178,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   row-gap: 24px;
 }
 .sec__titlewrap { grid-area: title; align-self: center; min-width: 0; }
-.sec__grid { grid-area: grid; align-self: center; }
+.sec__grid { grid-area: grid; align-self: center; display: grid; gap: 12px; }
+.sec__all { order: 1; justify-self: end; font-weight: 600; }
 
 .cue {
   grid-area: cue;
@@ -413,6 +414,18 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .footer__links { display: grid; gap: 4px; justify-items: start; }
 .footer__bottom { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
 .clock { font-variant-numeric: tabular-nums; }
+
+/* ---------- Picture viewer ---------- */
+
+.lightbox {
+  position: fixed; inset: 0; z-index: 65;
+  display: grid; place-items: center;
+  padding: max(24px, 5vh) var(--gutter);
+  background: rgba(0, 0, 0, 0.92);
+  cursor: zoom-out; outline: none;
+}
+.lightbox[hidden] { display: none; }
+.lightbox img { max-width: 100%; max-height: 100%; object-fit: contain; }
 
 /* ---------- Toast & cursor ---------- */
 
