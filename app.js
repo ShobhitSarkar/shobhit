@@ -162,7 +162,6 @@
       const next = SECTIONS[i + 1];
       return `
         <section class="screen sec${isInverse(s.id) ? " is-inverse" : ""}" id="s-${s.id}">
-          <div class="sec__num label">${pad(i + 1)} / XX</div>
           <div class="sec__titlewrap">
             ${fitTitle(s.title, "", "34vh")}
           </div>

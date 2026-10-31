@@ -170,15 +170,13 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .sec {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(260px, 36vw);
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: 1fr auto;
   grid-template-areas:
-    "num  num"
     "title grid"
     "cue  grid";
   column-gap: clamp(24px, 5vw, 80px);
   row-gap: 24px;
 }
-.sec__num { grid-area: num; }
 .sec__titlewrap { grid-area: title; align-self: center; min-width: 0; }
 .sec__grid { grid-area: grid; align-self: center; }
 
@@ -456,10 +454,11 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 @media (max-width: 860px) {
   .sec {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto auto auto auto;
-    grid-template-areas: "num" "title" "grid" "cue";
+    grid-template-rows: auto auto auto;
+    grid-template-areas: "title" "grid" "cue";
     align-content: space-between;
   }
+  .sec__titlewrap { padding-top: 32px; }
   .post { grid-template-columns: minmax(0, 1fr); }
   .post__heading { position: static; }
   .footer__cols { grid-template-columns: 1fr 1fr; }
