@@ -16,7 +16,7 @@
 window.SITE = {
   name: "Shobhit Sarkar",
   email: "hi@shobhit.fyi",
-  intro: "Welcome to my corner of the internet.",
+  intro: "Welcome to my corner of the internet!",
   timezone: "America/Chicago", // the landing-screen clock shows your time, ticking by the second
   links: [
     { label: "GitHub", href: "https://github.com/ShobhitSarkar" },
