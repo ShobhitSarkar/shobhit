@@ -18,7 +18,6 @@
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
   const esc = (s = "") => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-  const pad = (n) => String(n).padStart(2, "0");
   const items = (id) => S[id] || [];
   const sectionById = (id) => SECTIONS.find((s) => s.id === id);
   // Screens alternate black / white: the landing screen is black, so the first section is white.
@@ -76,7 +75,6 @@
 
   // A lone tile fills the whole square, so posts and projects have room to show their text without a hover.
   const soloText = (section, item, i) => `
-      <span class="tile__n">${pad(i + 1)}</span>
       <span class="tile__solo">
         ${item.meta ? `<span class="tile__meta">${esc(item.meta)}</span>` : ""}
         <span class="tile__title">${esc(item.title)}</span>
@@ -95,7 +93,7 @@
       return `<span class="tile__book"><span>${esc(item.title)}</span><span class="muted">${esc(item.meta || "")}</span></span>`;
     }
     if (item.image) return `<img src="${esc(item.image)}" alt="" loading="lazy">`;
-    if (section === "writes") return `<span class="tile__n">${pad(i + 1)}</span><span class="tile__peek">${esc(item.title)}</span>`;
+    if (section === "writes") return `<span class="tile__peek">${esc(item.title)}</span>`;
     return art(item.slug, i);
   }
 
@@ -144,7 +142,7 @@
 
   function renderHome() {
     const initials = S.name.split(/\s+/).map((w) => w[0]).join("").toUpperCase();
-    const index = SECTIONS.map((s, i) => `<li><a href="#" class="js-jump" data-to="s-${s.id}"><span>${pad(i + 1)}</span>${esc(s.title)}</a></li>`).join("");
+    const index = SECTIONS.map((s, i) => `<li><a href="#" class="js-jump" data-to="s-${s.id}">${esc(s.title)}</a></li>`).join("");
     const hero = `
       <section class="screen sec hero" id="s-home">
         <div class="sec__titlewrap">${fitTitle(S.name.replace(" ", "\n"), "", "", "h1")}</div>
@@ -233,7 +231,7 @@
         </section>`)
       .join("");
     const body = paragraphs(it.body, true) + (roles ? `<div class="roles">${roles}</div>` : "");
-    const meta = [s.title, it.meta, sectionId === "inspo" ? "Synopsis" : ""].filter(Boolean).map((m) => `<span>${esc(m)}</span>`).join("");
+    const meta = it.meta ? `<span>${esc(it.meta)}</span>` : "";
     return `
       <div class="ov__bar label">
         <a href="#/${sectionId}" class="u-link js-route" data-cursor="BACK">← All ${esc(s.title)}</a>
@@ -245,7 +243,7 @@
           ${sectionId === "work" && it.summary ? `<p class="post__summary">${esc(it.summary)}</p>` : ""}
         </div>
         <div>
-          <div class="post__meta label muted">${meta}</div>
+          ${meta ? `<div class="post__meta label muted">${meta}</div>` : ""}
           <div class="post__body">${body}</div>
           ${sectionId === "writes" ? `<div class="post__cta"><b>Thoughts? Disagree?</b>${emailLink("Email me →", "btn js-email")}</div>` : ""}
           <nav class="post__nav label">
