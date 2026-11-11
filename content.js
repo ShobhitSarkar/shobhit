@@ -23,7 +23,7 @@ window.SITE = {
   timezone: "America/Chicago", // the landing-screen clock shows your time, ticking by the second
   links: [
     { label: "GitHub", href: "https://github.com/ShobhitSarkar" },
-    { label: "LinkedIn", href: "#" }, // TODO
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/shobhitsarkar" },
   ],
 
   sections: [
