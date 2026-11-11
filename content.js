@@ -23,7 +23,7 @@ window.SITE = {
   timezone: "America/Chicago", // the landing-screen clock shows your time, ticking by the second
   links: [
     { label: "GitHub", href: "https://github.com/ShobhitSarkar" },
-    { label: "LinkedIn", href: "#" }, // TODO
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/shobhitsarkar" },
   ],
 
   sections: [
@@ -86,7 +86,7 @@ window.SITE = {
       roles: [
         {
           title: "Data Research Analyst Intern", dates: "Dec 2021 — Mar 2023",
-          body: [ // TODO: check this matches what you actually did
+          body: [
             "- Researched corporations and investment vehicles for large banking and capital-markets clients, identifying how they relate and turning that into validated data",
             "- Cleaned up new and existing records to keep improving data quality over time",
             "- Worked to the Operational Data Outsourcing team's data-quality and production standards",
