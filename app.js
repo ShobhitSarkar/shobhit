@@ -209,7 +209,7 @@
     const it = list[idx];
     const prev = list[idx - 1];
     const next = list[idx + 1];
-    const roles = (it.roles || [])
+    const roles = [...(it.roles || [])].reverse() // told in order: where it started, then what came next
       .map((r) => `<section class="role"><h3>${esc(r.title)}</h3>${r.dates ? `<div class="role__dates label muted">${esc(r.dates)}</div>` : ""}${paragraphs(r.body)}</section>`)
       .join("");
     const body = paragraphs(it.body, true) + (roles ? `<div class="roles">${roles}</div>` : "");
