@@ -14,7 +14,7 @@
 //   summary – (work only, optional) a short paragraph shown under the company name on its page
 //   roles  – (work only) one entry per role at that company, newest first: { title, dates, stats, body }.
 //            Shown in that order: stats (up to three { value, label } figures shown big), then body bullets
-//            (word for word from the résumé) for everything the figures don't already cover.
+//            for everything on the résumé the figures don't already cover (same content, wording can differ).
 //            The tile shows the latest role; the company page lists them all.
 window.SITE = {
   name: "Shobhit Sarkar",
@@ -106,7 +106,7 @@ window.SITE = {
             { value: "+15%", label: "Defect-detection accuracy" },
           ],
           body: [
-            "- Trained the model to detect dents and cracks, improving production quality control",
+            "- Trained a YOLOv4 model to detect dents and cracks, improving production quality control",
           ],
         },
         {
