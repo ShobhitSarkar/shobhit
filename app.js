@@ -214,6 +214,7 @@
           <div class="role__head"><h3>${esc(r.title)}</h3>${r.dates ? `<span class="label muted">${esc(r.dates)}</span>` : ""}</div>
           ${r.summary ? `<p>${esc(r.summary)}</p>` : ""}
           ${r.stats && r.stats.length ? `<div class="stats">${r.stats.slice(0, 3).map((st) => `<div class="stat"><span class="stat__value">${esc(st.value)}</span><span class="label muted">${esc(st.label)}</span></div>`).join("")}</div>` : ""}
+          ${paragraphs(r.body)}
         </section>`)
       .join("");
     const body = paragraphs(it.body, true) + (roles ? `<div class="roles">${roles}</div>` : "");

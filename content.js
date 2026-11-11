@@ -12,7 +12,8 @@
 //   body   – array of paragraphs; a string starting with "## " becomes a subheading, "- " a bullet point
 //   roles  – (work only) one entry per role at that company, newest first: { title, dates, summary, stats }.
 //            summary is 2–3 sentences in your own words (left empty, nothing shows); stats is up to three
-//            { value, label } figures shown big under it. The tile shows the latest role; the company page lists them all.
+//            { value, label } figures shown big under it. A role with no figures can use body (bullets) instead.
+//            The tile shows the latest role; the company page lists them all.
 window.SITE = {
   name: "Shobhit Sarkar",
   email: "hi@shobhit.fyi",
@@ -82,11 +83,12 @@ window.SITE = {
       roles: [
         {
           title: "Data Research Analyst Intern", dates: "Dec 2021 — Mar 2023",
-          summary: "", // TODO
-          // For reference: researched corporations and investment vehicles for banking and capital-markets clients and
-          // turned how they relate into validated data; cleaned new and existing records; worked to the Operational Data
-          // Outsourcing team's standards; helped on automation, efficiency and training projects.
-          stats: [],
+          body: [ // TODO: check this matches what you actually did
+            "- Researched corporations and investment vehicles for large banking and capital-markets clients, identifying how they relate and turning that into validated data",
+            "- Cleaned up new and existing records to keep improving data quality over time",
+            "- Worked to the Operational Data Outsourcing team's data-quality and production standards",
+            "- Helped on projects to improve automation, efficiency and training",
+          ],
         },
       ],
     },
@@ -106,10 +108,10 @@ window.SITE = {
         },
         {
           title: "Undergraduate Research Assistant", dates: "Jan — May 2022",
-          summary: "", // TODO
-          // For reference: PyTorch vs QuTiP for matrix operations in 8–12 bonding-site systems, benchmarked on CUDA;
-          // QuTiP stronger on sparse matrices, PyTorch on dense.
-          stats: [],
+          body: [
+            "- Evaluated PyTorch and QuTiP efficiency for matrix operations in 8–12 bonding-site systems",
+            "- Benchmarked CUDA performance, showing QuTiP's strength on sparse matrices and PyTorch's on dense ones",
+          ],
         },
       ],
     },
