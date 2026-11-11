@@ -166,8 +166,6 @@ window.SITE = {
       slug: "the-da-vinci-code", kind: "book", title: "The Da Vinci Code", meta: "Dan Brown", line: "Codes, cults and the Louvre after dark.",
       body: [
         "A murder in the Louvre sends symbologist Robert Langdon and cryptologist Sophie Neveu after a trail of clues hidden in Leonardo da Vinci's work, and a secret that a centuries-old society has been guarding.",
-        "## Why it's here",
-        "TODO — what stuck with you.",
       ],
     },
     { slug: "neverender-rampa-remix", kind: "music", href: "https://music.apple.com/us/album/neverender-rampa-remix/1767812502?i=1767813213", title: "Neverender (Rampa Remix)", image: "inspo/neverender.jpg", line: "Neverender (Rampa Remix) — Justice & Tame Impala" },
@@ -176,8 +174,6 @@ window.SITE = {
       slug: "the-48-laws-of-power", kind: "book", title: "The 48 Laws of Power", meta: "Robert Greene", line: "Three thousand years of power, distilled.",
       body: [
         "Forty-eight rules for gaining, holding and defending power, each one argued through stories from history: courtiers, generals, con artists and statesmen.",
-        "## Why it's here",
-        "TODO — what stuck with you.",
       ],
     },
     { slug: "te-estoy-correteando", kind: "music", href: "https://music.apple.com/us/album/te-estoy-correteando/6796842304?i=6796842545", title: "Te Estoy Correteando", image: "inspo/te-estoy-correteando.jpg", line: "Te Estoy Correteando — LATIN MAFIA & Fred again.." },
@@ -186,8 +182,6 @@ window.SITE = {
       slug: "the-psychology-of-money", kind: "book", title: "The Psychology of Money", meta: "Morgan Housel", line: "Behaviour beats spreadsheets.",
       body: [
         "Short stories about how people actually think about money, and why how you behave with it matters more than how much you know about it.",
-        "## Why it's here",
-        "TODO — what stuck with you.",
       ],
     },
     { slug: "juicy", kind: "music", href: "https://music.apple.com/us/album/juicy/204669415?i=204669680", title: "Juicy", image: "inspo/juicy.jpg", line: "Juicy — The Notorious B.I.G." },
@@ -196,8 +190,6 @@ window.SITE = {
       slug: "digital-fortress", kind: "book", title: "Digital Fortress", meta: "Dan Brown", line: "An unbreakable code inside the NSA.",
       body: [
         "NSA cryptographer Susan Fletcher discovers a code that the agency's code-breaking supercomputer can't crack, and a race begins to stop it before it compromises the country's intelligence systems.",
-        "## Why it's here",
-        "TODO — what stuck with you.",
       ],
     },
   ],
