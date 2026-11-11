@@ -42,9 +42,8 @@ window.SITE = {
         {
           title: "AI Software Engineer", dates: "Jun 2025 — now",
           stats: [
-            { value: "32%", label: "Faster agent responses" },
+            { value: "32%", label: "Faster agent responses, across 1.6M queries a year" },
             { value: "30K+", label: "Queries a month with MCP Apps" },
-            { value: "1.6M", label: "Agent queries a year" },
           ],
         },
         {
