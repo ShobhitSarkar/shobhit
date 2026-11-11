@@ -11,8 +11,11 @@
 //            colour on hover; music also shows its one-liner and opens href (e.g. Apple Music) in a new tab.
 //            Books are set in type and open a synopsis page
 //   body   – array of paragraphs; a string starting with "## " becomes a subheading, "- " a bullet point
-//   roles  – (work only) one entry per role at that company, newest first: { title, dates, body }.
-//            The tile shows the latest role; the company page lists them all as a timeline.
+//   summary – (work only, optional) a short paragraph shown under the company name on its page
+//   roles  – (work only) one entry per role at that company, newest first: { title, dates, stats, body }.
+//            Shown in that order: stats (up to three { value, label } figures shown big), then body bullets
+//            for anything the figures don't cover.
+//            The tile shows the latest role; the company page lists them all.
 window.SITE = {
   name: "Shobhit Sarkar",
   email: "hi@shobhit.fyi",
@@ -34,23 +37,25 @@ window.SITE = {
     {
       slug: "john-deere", title: "John Deere", logo: "logos/john-deere.svg",
       line: "Agents and MCP Apps for John Deere's dealer network.",
+      summary: "At John Deere, I build AI solutions to enable our technicians to repair equipment faster. Every second of downtime affects a farmer's bottom line. I also helped build the Deere AI platform, enabling all AI digital product teams within John Deere to build AI agents and products faster and more efficiently.",
       roles: [
         {
           title: "AI Software Engineer", dates: "Jun 2025 — now",
-          body: [
-            "- Architected the org-wide rollout of MCP Apps, bringing in-chat UI to 30K+ queries a month",
-            "- Cut agent response latency by 32% across 1.6M queries a year by optimising database logic",
-            "- Engineered a virtual file system that enables agentic search and skill sharing for dealerships",
-            "- Built an MCP App server with AI-powered parts search, handling 2.4K queries a week",
-            "- Built an analytics pipeline so business and engineering stakeholders can track KPIs",
+          stats: [
+            { value: "32%", label: "Faster agent responses" },
+            { value: "30K+", label: "Queries a month with MCP Apps" },
+            { value: "1.6M", label: "Agent queries a year" },
           ],
         },
         {
           title: "Student Software Engineer", dates: "Nov 2023 — May 2025",
+          stats: [
+            { value: "40+", label: "Micro-frontends decoupled" },
+            { value: "10+", label: "Teams releasing on their own" },
+            { value: "40+", label: "Repositories automated" },
+          ],
           body: [
-            "- Enabled async releases for 10+ teams with Module Federation, decoupling 40+ micro-frontends",
             "- Modernised 30+ UI components to match the Deere design system, improving UX and DX",
-            "- Automated 40+ repositories with Husky, CI/CD improvements and versioning for semantic deploys",
           ],
         },
       ],
@@ -61,10 +66,12 @@ window.SITE = {
       roles: [
         {
           title: "AI Interactions Intern", dates: "May — Aug 2023",
+          stats: [
+            { value: "91%", label: "F1 score, sentiment model" },
+            { value: "4", label: "Teams on the AI dashboard" },
+          ],
           body: [
-            "- Deployed a BERT-based sentiment analysis model with a 91% F1 score, contributing to an enterprise LLM",
             "- Architected a PyGame-based manual override system for an autonomous buggy prototype",
-            "- Built the UI for an AI resources dashboard used by 4 teams, centralising company-wide AI initiatives and training",
           ],
         },
       ],
@@ -91,9 +98,12 @@ window.SITE = {
       roles: [
         {
           title: "Undergraduate Research Assistant", dates: "Sep — Dec 2022",
+          stats: [
+            { value: "+15%", label: "Defect-detection accuracy" },
+          ],
           body: [
-            "- Improved YOLOv4 defect-detection accuracy by 15% by labelling images and optimising the train/test/validation split",
-            "- Trained the model to detect dents and cracks, improving production quality control",
+            "- Trained a YOLOv4 model to detect dents and cracks, improving production quality control",
+            "- Got the accuracy gain by labelling images and optimising the train/test/validation split",
           ],
         },
         {
