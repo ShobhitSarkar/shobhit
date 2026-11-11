@@ -10,7 +10,8 @@
       [S.inspo[i], S.inspo[j]] = [S.inspo[j], S.inspo[i]];
     }
   }
-  const PREVIEW_COUNT = 9;
+  // Home previews only ever show a full square: 1, 2×2 or 3×3 tiles, newest first. The rest are in the expanded grid.
+  const previewCols = (n) => (n >= 9 ? 3 : n >= 4 ? 2 : 1);
   const finePointer = matchMedia("(hover: hover) and (pointer: fine)").matches;
   const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -73,7 +74,18 @@
     return `<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${g}</svg>`;
   }
 
-  function tileFace(section, item, i) {
+  // A lone tile fills the whole square, so posts and projects have room to show their text without a hover.
+  const soloText = (section, item, i) => `
+      <span class="tile__n">${pad(i + 1)}</span>
+      <span class="tile__solo">
+        ${item.meta ? `<span class="tile__meta">${esc(item.meta)}</span>` : ""}
+        <span class="tile__title">${esc(item.title)}</span>
+        ${item.line ? `<span class="tile__line">${esc(item.line)}</span>` : ""}
+        <span class="btn">${section === "writes" ? "Read" : "Open"} →</span>
+      </span>`;
+
+  function tileFace(section, item, i, solo) {
+    if (solo && (section === "writes" || section === "projects")) return soloText(section, item, i);
     if (section === "work") {
       return item.logo
         ? `<span class="tile__logo" style="--logo: url('${esc(item.logo)}')"></span>`
@@ -101,8 +113,10 @@
       .replace(/(?:<li>.*?<\/li>)+/g, (items) => `<ul>${items}</ul>`);
 
   function tileHover(section, item) {
-    if (section === "inspo" && item.kind !== "book") {
-      return `<span class="tile__hover"><span class="tile__line">${esc(item.line)}</span></span>`;
+    // Pictures just get their colour back on hover; songs also say what they are and where they go.
+    if (section === "inspo" && item.kind === "image") return "";
+    if (section === "inspo" && item.kind === "music") {
+      return `<span class="tile__hover"><span class="tile__line">${esc(item.line)}${item.href ? " ↗" : ""}</span></span>`;
     }
     const synopsis = section === "inspo" ? `<button class="btn js-synopsis" data-slug="${esc(item.slug)}" data-cursor="READ">Synopsis</button>` : "";
     return `<span class="tile__hover">
@@ -113,14 +127,15 @@
       </span>`;
   }
 
-  function tile(section, item, i, expanded) {
+  function tile(section, item, i, solo = false) {
     const kind = section === "inspo" ? (item.kind === "book" ? "book" : "image") : section === "projects" ? "project" : section;
-    // Pictures don't open anywhere; everything else opens a post-style page.
+    // Pictures don't open anywhere, songs open their link, everything else opens a post-style page.
     const opens = !(section === "inspo" && item.kind !== "book");
-    return `<div class="tile tile--${kind}" role="button" tabindex="0" style="--i:${i}"
-        data-section="${section}" data-slug="${esc(item.slug)}" data-opens="${opens}" data-cursor=""
+    const href = section === "inspo" && item.kind === "music" && item.href ? ` data-href="${esc(item.href)}"` : "";
+    return `<div class="tile tile--${kind}" role="${href ? "link" : "button"}" tabindex="0" style="--i:${i}"
+        data-section="${section}" data-slug="${esc(item.slug)}" data-opens="${opens}"${href} data-cursor="${href ? "PLAY" : ""}"
         aria-label="${esc(item.title)}${item.line ? " — " + esc(item.line) : ""}">
-        <span class="tile__face">${tileFace(section, item, i)}</span>
+        <span class="tile__face">${tileFace(section, item, i, solo)}</span>
         ${tileHover(section, item)}
       </div>`;
   }
@@ -146,15 +161,16 @@
 
     const secs = SECTIONS.map((s, i) => {
       const list = items(s.id);
+      const cols = previewCols(list.length);
       const next = SECTIONS[i + 1];
       return `
         <section class="screen sec${isInverse(s.id) ? " is-inverse" : ""}" id="s-${s.id}">
-          <div class="sec__num label">${pad(i + 1)} / XX</div>
           <div class="sec__titlewrap">
             ${fitTitle(s.title, "", "34vh")}
           </div>
           <div class="sec__grid">
-            <div class="grid">${list.slice(0, PREVIEW_COUNT).map((it, j) => tile(s.id, it, j, false)).join("")}</div>
+            ${list.length > cols * cols ? `<a href="#/${s.id}" class="sec__all label u-link js-route" data-cursor="ALL">All ${list.length} →</a>` : ""}
+            <div class="grid${cols === 1 ? " grid--solo" : ""}" style="--cols:${cols}">${list.slice(0, cols * cols).map((it, j) => tile(s.id, it, j, cols === 1)).join("")}</div>
           </div>
           <button class="cue js-jump" data-to="${next ? "s-" + next.id : "s-contact"}" data-cursor="GO">
             ${esc(next ? next.title : "Say hi")} <span class="cue__arrow">↓</span>
@@ -170,7 +186,6 @@
         </div>
         <div class="footer__bottom label muted">
           <span>© ${new Date().getFullYear()} ${esc(S.name)}</span>
-          <span>Drawn by hand, built by hand.</span>
           <a href="#" class="u-link js-jump" data-to="s-home">Back to top ↑</a>
         </div>
       </footer>`;
@@ -183,7 +198,8 @@
       <main>${hero}${secs}${footer}</main>
       <div class="overlay" id="overlay" hidden></div>
       <div class="toast" id="toast" role="status"></div>
-      <div class="cursor" id="cursor"><span></span></div>`;
+      <div class="cursor" id="cursor"><span></span></div>
+      <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Picture" tabindex="-1" data-cursor="CLOSE" hidden><img alt=""></div>`;
   }
 
   // ---------- Overlay routes: #/section (expanded grid) and #/section/slug (post) ----------
@@ -197,7 +213,7 @@
     const rows = Math.ceil(list.length / cols);
     return `
       <div class="ov__grid js-backdrop" data-cursor="CLOSE" aria-label="${esc(sectionById(sectionId).title)}">
-        <div class="grid grid--full" style="--cols:${cols}; --rows:${rows}">${list.map((it, j) => tile(sectionId, it, j, true)).join("")}</div>
+        <div class="grid grid--full" style="--cols:${cols}; --rows:${rows}">${list.map((it, j) => tile(sectionId, it, j)).join("")}</div>
       </div>`;
   }
 
@@ -304,17 +320,20 @@
     if (max) size = Math.min(size, max.endsWith("vh") ? (parseFloat(max) * innerHeight) / 100 : parseFloat(max));
     el.style.fontSize = size.toFixed(2) + "px";
   }
-  // Post headings wrap between words only. When the longest word is wider than the column, shrink the type until it fits.
-  function fitHeading(el) {
-    el.style.fontSize = "";
-    if (el.scrollWidth <= el.clientWidth) return;
-    const size = parseFloat(getComputedStyle(el).fontSize);
-    el.style.fontSize = Math.floor((size * el.clientWidth * 0.98) / el.scrollWidth) + "px";
-  }
   const fitAll = (root = document) => {
     $$(".fit", root).forEach(fit);
-    $$(".post__heading", root).forEach(fitHeading);
+    $$(".post__heading", root).forEach(fitWords);
   };
+
+  // Post headings wrap onto several lines, so they only shrink when their longest word won't fit on one line.
+  function fitWords(el) {
+    el.style.fontSize = "";
+    let size = parseFloat(getComputedStyle(el).fontSize);
+    while (el.scrollWidth > el.clientWidth && size > 20) {
+      size *= 0.94;
+      el.style.fontSize = size.toFixed(2) + "px";
+    }
+  }
 
   // ---------- Behaviours ----------
 
@@ -353,10 +372,36 @@
     }
   }
 
+  // Tiles always open the thing itself; the full grid lives behind "All N →" and the "← All …" links.
   function openTile(t) {
-    const { section, slug } = t.dataset;
-    if (!t.closest(".grid--full")) return navigate("#/" + section); // compact grid → expanded grid
-    if (t.dataset.opens === "true") navigate(`#/${section}/${slug}`); // expanded → post
+    const { section, slug, href } = t.dataset;
+    if (href) {
+      // Songs → Apple Music. Desktops get a new tab. Phones stay in this tab: a new tab there is left blank
+      // while the Music app takes over, and that blank tab is what you come back to.
+      if (finePointer) return window.open(href, "_blank", "noopener");
+      return location.assign(href);
+    }
+    if (t.dataset.opens === "true") return navigate(`#/${section}/${slug}`); // everything else opens its own page…
+    const img = t.querySelector("img"); // …except pictures, which open large and in colour
+    if (img) openLightbox(img, t);
+  }
+
+  let lightboxFrom = null; // the tile to hand focus back to
+  function openLightbox(img, from) {
+    const lb = $("#lightbox");
+    $("img", lb).src = img.currentSrc || img.src;
+    lightboxFrom = from;
+    lb.hidden = false;
+    document.body.classList.add("is-locked");
+    lb.focus();
+  }
+  function closeLightbox() {
+    const lb = $("#lightbox");
+    if (lb.hidden) return false;
+    lb.hidden = true;
+    if (!parseRoute()) document.body.classList.remove("is-locked");
+    lightboxFrom?.focus();
+    return true;
   }
 
   function bindEvents() {
@@ -367,16 +412,23 @@
       const email = t.closest(".js-email");
       if (email) { e.preventDefault(); return copyEmail(); }
       const jump = t.closest(".js-jump");
-      if (jump) { e.preventDefault(); return document.getElementById(jump.dataset.to)?.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth" }); }
+      if (jump) {
+        e.preventDefault();
+        const to = document.getElementById(jump.dataset.to);
+        // From a post or an expanded grid (e.g. the SS in the header), close it and land on the target, not where you came from.
+        if (parseRoute()) { lastSection = null; navigate(""); return to?.scrollIntoView({ behavior: "instant" }); }
+        return to?.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth" });
+      }
       const r = t.closest(".js-route");
       if (r) { e.preventDefault(); return navigate(r.getAttribute("href")); }
       if (t.closest(".js-close") || t.classList.contains("js-backdrop")) { e.preventDefault(); return closeOverlay(); }
+      if (t.closest("#lightbox")) { e.preventDefault(); return closeLightbox(); }
       const tl = t.closest(".tile");
       if (tl) return openTile(tl);
     });
 
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") return closeOverlay();
+      if (e.key === "Escape") return closeLightbox() || closeOverlay();
       const tl = e.target.closest?.(".tile");
       if (tl && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openTile(tl); }
     });
