@@ -305,7 +305,17 @@
     if (max) size = Math.min(size, max.endsWith("vh") ? (parseFloat(max) * innerHeight) / 100 : parseFloat(max));
     el.style.fontSize = size.toFixed(2) + "px";
   }
-  const fitAll = (root = document) => $$(".fit", root).forEach(fit);
+  // Post headings wrap between words only. When the longest word is wider than the column, shrink the type until it fits.
+  function fitHeading(el) {
+    el.style.fontSize = "";
+    if (el.scrollWidth <= el.clientWidth) return;
+    const size = parseFloat(getComputedStyle(el).fontSize);
+    el.style.fontSize = Math.floor((size * el.clientWidth * 0.98) / el.scrollWidth) + "px";
+  }
+  const fitAll = (root = document) => {
+    $$(".fit", root).forEach(fit);
+    $$(".post__heading", root).forEach(fitHeading);
+  };
 
   // ---------- Behaviours ----------
 
