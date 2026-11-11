@@ -14,7 +14,7 @@
 //   summary – (work only, optional) a short paragraph shown under the company name on its page
 //   roles  – (work only) one entry per role at that company, newest first: { title, dates, stats, body }.
 //            Shown in that order: stats (up to three { value, label } figures shown big), then body bullets
-//            for anything the figures don't cover.
+//            (word for word from the résumé) for everything the figures don't already cover.
 //            The tile shows the latest role; the company page lists them all.
 window.SITE = {
   name: "Shobhit Sarkar",
@@ -44,6 +44,11 @@ window.SITE = {
           stats: [
             { value: "32%", label: "Faster agent responses, across 1.6M queries a year" },
             { value: "30K+", label: "Queries a month with MCP Apps" },
+          ],
+          body: [
+            "- Engineered a virtual file system that enables agentic search and skill sharing for dealerships",
+            "- Built an MCP App server with AI-powered parts search, handling 2.4K queries a week",
+            "- Built an analytics pipeline so business and engineering stakeholders can track KPIs",
           ],
         },
         {
@@ -101,8 +106,7 @@ window.SITE = {
             { value: "+15%", label: "Defect-detection accuracy" },
           ],
           body: [
-            "- Trained a YOLOv4 model to detect dents and cracks, improving production quality control",
-            "- Got the accuracy gain by labelling images and optimising the train/test/validation split",
+            "- Trained the model to detect dents and cracks, improving production quality control",
           ],
         },
         {
