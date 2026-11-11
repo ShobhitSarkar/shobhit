@@ -10,8 +10,9 @@
 //   kind   – (inspo only) "image" | "music" | "book". Images and music show their picture in black and white,
 //            colour on hover, with the one-liner; books are set in type and open a synopsis page
 //   body   – array of paragraphs; a string starting with "## " becomes a subheading, "- " a bullet point
-//   roles  – (work only) one entry per role at that company, newest first: { title, dates, body }.
-//            The tile shows the latest role; the company page lists them all as a timeline.
+//   roles  – (work only) one entry per role at that company, newest first: { title, dates, summary, stats }.
+//            summary is 2–3 sentences in your own words (left empty, nothing shows); stats is up to three
+//            { value, label } figures shown big under it. The tile shows the latest role; the company page lists them all.
 window.SITE = {
   name: "Shobhit Sarkar",
   email: "hi@shobhit.fyi",
@@ -36,20 +37,25 @@ window.SITE = {
       roles: [
         {
           title: "AI Software Engineer", dates: "Jun 2025 — now",
-          body: [
-            "- Architected the org-wide rollout of MCP Apps, bringing in-chat UI to 30K+ queries a month",
-            "- Cut agent response latency by 32% across 1.6M queries a year by optimising database logic",
-            "- Engineered a virtual file system that enables agentic search and skill sharing for dealerships",
-            "- Built an MCP App server with AI-powered parts search, handling 2.4K queries a week",
-            "- Built an analytics pipeline so business and engineering stakeholders can track KPIs",
+          summary: "", // TODO: 2–3 sentences in your own words
+          // For reference while you write: MCP Apps rollout (in-chat UI, 30K+ queries a month); 32% lower agent latency
+          // across 1.6M queries a year; virtual file system for agentic search and skill sharing; MCP App server with
+          // AI-powered parts search (2.4K queries a week); analytics pipeline for business and engineering KPIs.
+          stats: [
+            { value: "32%", label: "Faster agent responses" },
+            { value: "30K+", label: "Queries a month with MCP Apps" },
+            { value: "1.6M", label: "Agent queries a year" },
           ],
         },
         {
           title: "Student Software Engineer", dates: "Nov 2023 — May 2025",
-          body: [
-            "- Enabled async releases for 10+ teams with Module Federation, decoupling 40+ micro-frontends",
-            "- Modernised 30+ UI components to match the Deere design system, improving UX and DX",
-            "- Automated 40+ repositories with Husky, CI/CD improvements and versioning for semantic deploys",
+          summary: "", // TODO
+          // For reference: Module Federation for async releases (10+ teams, 40+ micro-frontends); 30+ UI components moved
+          // to the Deere design system; Husky, CI/CD and semantic versioning across 40+ repositories.
+          stats: [
+            { value: "40+", label: "Micro-frontends decoupled" },
+            { value: "10+", label: "Teams releasing on their own" },
+            { value: "40+", label: "Repositories automated" },
           ],
         },
       ],
@@ -60,10 +66,12 @@ window.SITE = {
       roles: [
         {
           title: "AI Interactions Intern", dates: "May — Aug 2023",
-          body: [
-            "- Deployed a BERT-based sentiment analysis model with a 91% F1 score, contributing to an enterprise LLM",
-            "- Architected a PyGame-based manual override system for an autonomous buggy prototype",
-            "- Built the UI for an AI resources dashboard used by 4 teams, centralising company-wide AI initiatives and training",
+          summary: "", // TODO
+          // For reference: BERT sentiment model (91% F1) feeding an enterprise LLM; PyGame manual override for an
+          // autonomous buggy prototype; UI for an AI resources dashboard used by 4 teams.
+          stats: [
+            { value: "91%", label: "F1 score, sentiment model" },
+            { value: "4", label: "Teams on the AI dashboard" },
           ],
         },
       ],
@@ -74,12 +82,11 @@ window.SITE = {
       roles: [
         {
           title: "Data Research Analyst Intern", dates: "Dec 2021 — Mar 2023",
-          body: [ // TODO: check this matches what you actually did
-            "- Researched corporations and investment vehicles for large banking and capital-markets clients, identifying how they relate and turning that into validated data",
-            "- Cleaned up new and existing records to keep improving data quality over time",
-            "- Worked to the Operational Data Outsourcing team's data-quality and production standards",
-            "- Helped on projects to improve automation, efficiency and training",
-          ],
+          summary: "", // TODO
+          // For reference: researched corporations and investment vehicles for banking and capital-markets clients and
+          // turned how they relate into validated data; cleaned new and existing records; worked to the Operational Data
+          // Outsourcing team's standards; helped on automation, efficiency and training projects.
+          stats: [],
         },
       ],
     },
@@ -90,17 +97,19 @@ window.SITE = {
       roles: [
         {
           title: "Undergraduate Research Assistant", dates: "Sep — Dec 2022",
-          body: [
-            "- Improved YOLOv4 defect-detection accuracy by 15% by labelling images and optimising the train/test/validation split",
-            "- Trained the model to detect dents and cracks, improving production quality control",
+          summary: "", // TODO
+          // For reference: YOLOv4 defect detection (dents and cracks) for production quality control; +15% accuracy from
+          // labelling images and optimising the train/test/validation split.
+          stats: [
+            { value: "+15%", label: "Defect-detection accuracy" },
           ],
         },
         {
           title: "Undergraduate Research Assistant", dates: "Jan — May 2022",
-          body: [
-            "- Evaluated PyTorch and QuTiP efficiency for matrix operations in 8–12 bonding-site systems",
-            "- Benchmarked CUDA performance, showing QuTiP's strength on sparse matrices and PyTorch's on dense ones",
-          ],
+          summary: "", // TODO
+          // For reference: PyTorch vs QuTiP for matrix operations in 8–12 bonding-site systems, benchmarked on CUDA;
+          // QuTiP stronger on sparse matrices, PyTorch on dense.
+          stats: [],
         },
       ],
     },

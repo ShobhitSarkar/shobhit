@@ -210,7 +210,11 @@
     const prev = list[idx - 1];
     const next = list[idx + 1];
     const roles = (it.roles || [])
-      .map((r) => `<section class="role"><h3>${esc(r.title)}</h3>${r.dates ? `<div class="role__dates label muted">${esc(r.dates)}</div>` : ""}${paragraphs(r.body)}</section>`)
+      .map((r) => `<section class="role">
+          <div class="role__head"><h3>${esc(r.title)}</h3>${r.dates ? `<span class="label muted">${esc(r.dates)}</span>` : ""}</div>
+          ${r.summary ? `<p>${esc(r.summary)}</p>` : ""}
+          ${r.stats && r.stats.length ? `<div class="stats">${r.stats.slice(0, 3).map((st) => `<div class="stat"><span class="stat__value">${esc(st.value)}</span><span class="label muted">${esc(st.label)}</span></div>`).join("")}</div>` : ""}
+        </section>`)
       .join("");
     const body = paragraphs(it.body, true) + (roles ? `<div class="roles">${roles}</div>` : "");
     const meta = [s.title, it.meta, sectionId === "inspo" ? "Synopsis" : ""].filter(Boolean).map((m) => `<span>${esc(m)}</span>`).join("");
@@ -220,7 +224,10 @@
         <a href="#" class="u-link js-close" data-cursor="BYE">Close ✕</a>
       </div>
       <article class="post">
-        <h1 class="display post__heading">${esc(it.title)}</h1>
+        <div class="post__side">
+          <h1 class="display post__heading">${esc(it.title)}</h1>
+          ${sectionId === "work" && it.line ? `<p class="post__summary">${esc(it.line)}</p>` : ""}
+        </div>
         <div>
           <div class="post__meta label muted">${meta}</div>
           <div class="post__body">${body}</div>
