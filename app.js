@@ -212,7 +212,6 @@
     const roles = (it.roles || [])
       .map((r) => `<section class="role">
           <div class="role__head"><h3>${esc(r.title)}</h3>${r.dates ? `<span class="label muted">${esc(r.dates)}</span>` : ""}</div>
-          ${r.summary ? `<p>${esc(r.summary)}</p>` : ""}
           ${r.stats && r.stats.length ? `<div class="stats">${r.stats.slice(0, 3).map((st) => `<div class="stat"><span class="stat__value">${esc(st.value)}</span><span class="label muted">${esc(st.label)}</span></div>`).join("")}</div>` : ""}
           ${paragraphs(r.body)}
         </section>`)
@@ -227,7 +226,7 @@
       <article class="post">
         <div class="post__side">
           <h1 class="display post__heading">${esc(it.title)}</h1>
-          ${sectionId === "work" && it.line ? `<p class="post__summary">${esc(it.line)}</p>` : ""}
+          ${sectionId === "work" && it.summary ? `<p class="post__summary">${esc(it.summary)}</p>` : ""}
         </div>
         <div>
           <div class="post__meta label muted">${meta}</div>

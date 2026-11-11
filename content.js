@@ -10,9 +10,10 @@
 //   kind   – (inspo only) "image" | "music" | "book". Images and music show their picture in black and white,
 //            colour on hover, with the one-liner; books are set in type and open a synopsis page
 //   body   – array of paragraphs; a string starting with "## " becomes a subheading, "- " a bullet point
-//   roles  – (work only) one entry per role at that company, newest first: { title, dates, summary, stats, body }.
-//            Shown in that order: summary (a few sentences, used on the current role), stats (up to three
-//            { value, label } figures shown big), then body bullets for anything the figures don't cover.
+//   summary – (work only, optional) a short paragraph shown under the company name on its page
+//   roles  – (work only) one entry per role at that company, newest first: { title, dates, stats, body }.
+//            Shown in that order: stats (up to three { value, label } figures shown big), then body bullets
+//            for anything the figures don't cover.
 //            The tile shows the latest role; the company page lists them all.
 window.SITE = {
   name: "Shobhit Sarkar",
@@ -35,10 +36,10 @@ window.SITE = {
     {
       slug: "john-deere", title: "John Deere", logo: "logos/john-deere.svg",
       line: "Agents and MCP Apps for John Deere's dealer network.",
+      summary: "At John Deere, I build AI solutions to enable our technicians to repair equipment faster. Every second of downtime affects a farmer's bottom line. I also helped build the Deere AI platform, enabling all AI digital product teams within John Deere to build AI agents and products faster and more efficiently.",
       roles: [
         {
           title: "AI Software Engineer", dates: "Jun 2025 — now",
-          summary: "At John Deere, I build AI solutions to enable our technicians to repair equipment faster. Every second of downtime affects a farmer's bottom line. I also helped build the Deere AI platform, enabling all AI digital product teams within John Deere to build AI agents and products faster and more efficiently.",
           stats: [
             { value: "32%", label: "Faster agent responses" },
             { value: "30K+", label: "Queries a month with MCP Apps" },
